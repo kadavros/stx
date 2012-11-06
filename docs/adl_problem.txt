@@ -1,0 +1,86 @@
+Copied from: http://www.mail-archive.com/boost@lists.boost.org/msg01780.html
+
+RE: [boost] mpl::copy_backward conflicts
+
+Aleksey Gurtovoy
+Tue, 10 Dec 2002 01:21:09 -0800
+
+Peter Dimov wrote:
+> From: "vladimir josef sykora" <[EMAIL PROTECTED]>
+> > template <class Sequence>
+> > struct foo {
+> > };
+> >
+> > // usage example:
+> >   typedef boost::mpl::vector<...> types;
+> >   typedef foo<types>              foo_types;
+> >   std::vector<foo_types>          std_vect_foos;
+> >   std_vect_foos.push_back(foo<types>());
+> >
+> > When mpl::copy_backward is present (from boost/mpl/insert.hpp for
+> example),
+> > I get this error (gcc 3.2):
+> >
+> > `template<class
+> >    Sequence, class State, class BinaryOp> struct
+> boost::mpl::copy_backward'
+> > is
+> >    not a function,
+> > conflict with `
+> >    template<class _BI1, class _BI2> _BI2 
+> std::copy_backward(_BI1, _BI1,
+> > _BI2)'
+> > in call to `copy_backward'
+> >
+> > Since std::copy_backward is found via ADL, I consider this IMHO a
+> stringent
+> > restriction to the use of mpl::insert & mpl::erase.
+> 
+> This is a g++ specific "feature", or rather a combination of 
+> two "features".
+> 
+> First, the standard library uses unqualified calls to standard library
+> algorithms.
+
+Yep. A bug, IMO.
+
+> 
+> Second, argument dependent lookup finds class names (such as
+> mpl::copy_backward.)
+> 
+> Many people consider both to be defects.
+
+In particular, see library active issue #225
+(http://anubis.dkuug.dk/jtc1/sc22/wg21/docs/lwg-active.html#225) and core
+language issue #218
+(http://anubis.dkuug.dk/jtc1/sc22/wg21/docs/cwg_active.html#218).
+
+Meanwhile, I am not sure what one can do about it besides switching to
+another standard library implementation (e.g. STLPort). Well, I guess I can
+"separate" MPL sequences from the algorithms by putting the later into a
+nested 'impl' namespace and bringing them back through a 'using' directive
+so they are not found via ADL when one mixes MPL sequences and STL:
+
+    namespace mpl {
+
+    template< typename T1 > struct vector {};
+
+    namespace impl {
+    template< typename Sequence, typename State, typename BinaryOp >
+    struct copy_backward
+    {
+        // ...
+    };
+    }
+
+    using namespace impl;
+
+    } // namespace mpl
+
+    int main()
+    {
+        std::vector<mpl::vector<int> > v;
+        v.push_back(mpl::vector<int>()); // OK, even on GCC
+    }
+
+but I am not sure how reliable that would be. Hmm, it might even work.
