@@ -22,7 +22,7 @@
 #include <stx/log/ostream_logger.hpp>
 #include <stx/log/file_logger.hpp>
 #include <stx/log/rolling_file_logger.hpp>
-#include <stx/log/syslog_logger.hpp>
+//#include <stx/log/syslog_logger.hpp>
 #include <stx/log/global_logger.hpp>
 
 //  Log level constants are defined in <stx/log/basic_logger.hpp> file.

@@ -3,7 +3,8 @@
 
 #include <stx/log/basic_logger.hpp>
 
-#ifdef STX_HAS_SYSLOG
+//#ifdef STX_HAS_SYSLOG
+
 #include <syslog.h>
 #include <sstream>
 
@@ -140,6 +141,6 @@ protected:
 
 } // namespace stx
 
-#endif // STX_HAS_SYSLOG
+//#endif // STX_HAS_SYSLOG
 
 #endif // STX_LOG_SYSLOG_LOGGER_HPP
