@@ -41,12 +41,12 @@ namespace stx {
 
 inline basic_logger& get_logger()
 {
-    return *global_logger<basic_logger>();
+    return *detail::global_logger<basic_logger>();
 }
 
 inline void set_logger(basic_logger& log)
 {
-    global_logger<basic_logger>(&log);
+    detail::global_logger<basic_logger>(&log);
 }
 
 } // namespace stx
