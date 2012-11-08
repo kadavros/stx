@@ -3,6 +3,10 @@
 
 #include <stx/log/basic_logger.hpp>
 
+#ifdef STX_PLATFORM_UNIX
+
+// TODO
+// Is there any trustworthy way to determine presense of syslog api at macro level?
 //#ifdef STX_HAS_SYSLOG
 
 #include <syslog.h>
@@ -142,5 +146,6 @@ protected:
 } // namespace stx
 
 //#endif // STX_HAS_SYSLOG
+#endif // STX_PLATFORM_UNIX
 
 #endif // STX_LOG_SYSLOG_LOGGER_HPP

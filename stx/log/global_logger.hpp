@@ -7,10 +7,12 @@
 namespace stx {
 
 template <class Logger>
-Logger* global_logger(Logger* new_log = NULL)
+Logger* global_logger(Logger* new_log = NULL);
+
+template<> basic_logger* global_logger<basic_logger>(basic_logger* new_log)
 {
     static cout_logger log;
-    static Logger* plog = &log;
+    static basic_logger* plog = &log;
     //static mutex m;
     if (new_log) {
         //lock_guard<mutex> lock(m);
@@ -18,8 +20,6 @@ Logger* global_logger(Logger* new_log = NULL)
     }
     return plog;
 }
-
-//template basic_logger* global_logger(basic_logger* new_log = NULL);
 
 } // namespace stx
 
