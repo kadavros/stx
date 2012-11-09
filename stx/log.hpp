@@ -22,16 +22,25 @@
 #include <stx/log/ostream_logger.hpp>
 #include <stx/log/file_logger.hpp>
 #include <stx/log/rolling_file_logger.hpp>
-//#include <stx/log/syslog_logger.hpp>
 #include <stx/log/global_logger.hpp>
+
+#ifdef STX_PLATFORM_UNIX
+// TODO
+// Is there any trustworthy way to determine presense of syslog api at macro level?
+//#ifdef STX_HAS_SYSLOG
+#include <stx/log/syslog_logger.hpp>
+#endif
 
 //  Log level constants are defined in <stx/log/basic_logger.hpp> file.
 //  Available ready-to-use logger classes:
-//      class cout_logger;
-//      class clog_logger;
 //      class file_logger;
 //      class rolling_file_logger;
+//      class ostream_logger;
 //      class syslog_logger;
+//  And wide char analogs:
+//      class wfile_logger;
+//      class wrolling_file_logger;
+//      class wostream_logger;
 
 //  Functions get_logger() and set_logger() should not be defined only in
 //  namespace stx in order to let users provide their own implementations
@@ -39,14 +48,14 @@
 
 namespace stx {
 
-inline basic_logger& get_logger()
+inline logger& get_logger()
 {
-    return *detail::global_logger<basic_logger>();
+    return detail::global_logger<logger>();
 }
 
-inline void set_logger(basic_logger& log)
+inline void set_logger(logger& log)
 {
-    detail::global_logger<basic_logger>(&log);
+    detail::global_logger<logger>(&log);
 }
 
 } // namespace stx

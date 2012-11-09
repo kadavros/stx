@@ -22,11 +22,22 @@ namespace stx {
 //      log.set_delimiter(" ");
 //      log.debug().setw(10).setfill('0') << 256; // Ok - desired formatting.
 //      log.debug() << setw(10) << setfill('0') << 256; // Ops, extra delimiters!
+
+template <
+    class CharType,
+    class CharTraits = std::char_traits<CharType>,
+    class Allocator = std::allocator<CharType>
+>
 class log_formatter
 {
 public:
     
-    typedef abstract_logger<log_formatter> logger_type;
+    typedef log_formatter<CharType, CharTraits, Allocator> this_type;
+    typedef abstract_logger<this_type, CharType, CharTraits, Allocator> logger_type;
+    typedef CharType char_type;
+    typedef std::basic_string<CharType, CharTraits, Allocator> string_type;
+    typedef std::basic_ostream<CharType, CharTraits> stream_type;
+    typedef std::basic_ios<CharType, CharTraits> ios_type;
     
     log_formatter(logger_type& logger, bool enabled):
         logger_(logger),
@@ -52,29 +63,29 @@ public:
         return *this;
     }
     
-    log_formatter& operator <<(const std::string& x)
+    log_formatter& operator <<(const string_type& x)
     {
-        if (x != "") {
+        if (!x.empty()) {
             write_to_stream(x);
         }
         return *this;
     }
     
-    log_formatter& operator <<(const char* x)
+    log_formatter& operator <<(const char_type* x)
     {
-        if (x[0] != '\0') {
+        if (*x) {
             write_to_stream(x);
         }
         return *this;
     }
     
-    log_formatter& operator<< (std::ostream& (*x)(std::ostream&))
+    log_formatter& operator<< (stream_type& (*x)(stream_type&))
     {
         write_to_stream_without_delimiter(x);
         return *this;
     }
     
-    log_formatter& operator <<(std::ios& (*x)(std::ios&))
+    log_formatter& operator <<(ios_type& (*x)(ios_type&))
     {
         write_to_stream_without_delimiter(x);
         return *this;

@@ -3,12 +3,6 @@
 
 #include <stx/log/basic_logger.hpp>
 
-#ifdef STX_PLATFORM_UNIX
-
-// TODO
-// Is there any trustworthy way to determine presense of syslog api at macro level?
-//#ifdef STX_HAS_SYSLOG
-
 #include <syslog.h>
 #include <sstream>
 
@@ -31,14 +25,25 @@ namespace stx {
 //    log_level_emergency
 //};
 
-class syslog_logger: public basic_logger
+template <
+    class CharType,
+    class CharTraits = std::char_traits<CharType>,
+    class Allocator = std::allocator<CharType>,
+    class Formatter = log_formatter<CharType, CharTraits, Allocator>
+>
+class basic_syslog_logger:
+    public basic_logger<CharType, CharTraits, Allocator, Formatter>
 {
 public:
     
-    syslog_logger(
-        const std::string& delimiter = "",
-        int log_level = log_level_all):
-            basic_logger(delimiter, log_level)
+    typedef abstract_logger<Formatter, CharType, CharTraits, Allocator> abstract_logger_type;
+    typedef CharType char_type;
+    typedef std::basic_string<CharType, CharTraits, Allocator> string_type;
+    typedef std::basic_ostream<CharType, CharTraits> ostream_type;
+    typedef basic_logger<CharType, CharTraits, Allocator, Formatter> basic_logger_type;
+    typedef std::basic_ostringstream<CharType, CharTraits, Allocator> ostringstream_type;
+    
+    basic_syslog_logger(int log_level = log_level_all): basic_logger_type(log_level)
     {
     }
     
@@ -70,21 +75,21 @@ public:
     //      LOG_LOCAL5: Reserved for local use.
     //      LOG_LOCAL6: Reserved for local use.
     //      LOG_LOCAL7: Reserved for local use.
-    syslog_logger(
-        const std::string& prepending_string = "",
+    basic_syslog_logger(
+        const string_type& prepending_string = "",
         int options = LOG_ODELAY,
         int facility = LOG_USER,
-        const std::string& delimiter = "",
+        const string_type& delimiter = "",
         int log_level = log_level_all)
     {
         create(prepending_string, options, facility, delimiter, log_level);
     }
     
     void create(
-        const std::string& prepending_string = "",
+        const string_type& prepending_string = "",
         int options = LOG_ODELAY,
         int facility = LOG_USER,
-        const std::string& delimiter = "",
+        const string_type& delimiter = "",
         int log_level = log_level_all)
     {
         level_ = log_level;
@@ -92,21 +97,21 @@ public:
         openlog(prepending_string.c_str(), options, facility);
     }
     
-    virtual ~syslog_logger()
+    virtual ~basic_syslog_logger()
     {
         closelog();
     }
     
-    syslog_logger& set_level(int new_level)
+    basic_syslog_logger& set_level(int new_level)
     {
         basic_logger::set_level(new_level);
         setlogmask(level_to_syslog_priority(new_level));
         return *this;
     }
     
-    std::ostream& stream()
+    ostream_type& stream()
     {
-        ss_.str("");
+        ss_.str(""); //todo make portable for wchar_t
         return ss_;
     }
     
@@ -139,9 +144,11 @@ protected:
         return syslog_priority;
     }
     
-    std::ostringstream ss_;
+    ostringstream_type ss_;
     int message_level_;
 };
+
+typedef basic_syslog_logger<char> syslog_logger;
 
 } // namespace stx
 

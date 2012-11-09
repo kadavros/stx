@@ -2,6 +2,7 @@
 #define STX_LOG_DATE_TIME_HPP
 
 #include <stx/log/config.hpp>
+#include <string>
 #include <ctime>
 
 #if defined(STX_PLATFORM_WINDOWS)
@@ -28,11 +29,36 @@
 namespace stx {
 namespace log {
 
+template <class T> inline const T* date_separator();
+template <> inline const char*     date_separator<char>() { return "-"; }
+template <> inline const wchar_t*  date_separator<wchar_t>() { return L"-"; }
+
+template <class T> inline const T* datetime_separator();
+template <> inline const char*     datetime_separator<char>() { return " "; }
+template <> inline const wchar_t*  datetime_separator<wchar_t>() { return L" "; }
+
+template <class T> inline const T* time_separator();
+template <> inline const char*     time_separator<char>() { return ":"; }
+template <> inline const wchar_t*  time_separator<wchar_t>() { return L":"; }
+    
+template <class T> inline const T* nanoseconds_separator();
+template <> inline const char*     nanoseconds_separator<char>() { return "."; }
+template <> inline const wchar_t*  nanoseconds_separator<wchar_t>() { return L"."; }
+
+template <
+    class CharType,
+    class CharTraits = std::char_traits<CharType>,
+    class Allocator = std::allocator<CharType>
+>
 class local_time
 {
 public:
     
-    typedef local_time this_type;
+    typedef local_time<CharType, CharTraits, Allocator> this_type;
+    typedef CharType char_type;
+    typedef std::basic_string<CharType, CharTraits, Allocator> string_type;
+    typedef std::basic_ostream<CharType, CharTraits> stream_type;
+    typedef std::basic_ios<CharType, CharTraits> ios_type;
     
     local_time()
     {
@@ -65,12 +91,8 @@ public:
     template <class ostream_type>
     ostream_type& print(ostream_type& os, int subsecond_precision = 3) const
     {
-        std::string date_separator("-"),
-            datetime_separator(" "),
-            time_separator(":"),
-            nanoseconds_separator(".");
         std::ios_base::fmtflags prev_flags(os.flags());
-        os.flags(std::ios::dec | std::ios::fixed);
+        os.flags(ios_type::dec | ios_type::fixed);
         char prev_fill_char = os.fill();
         os.fill('0');
         if (subsecond_precision > 9) {
@@ -82,14 +104,14 @@ public:
         if (!ret) {
             //STX_THROW_SYSTEM_ERROR("FileTimeToSystemTime");
         }
-        os  << std::setw(4) << st.wYear << date_separator
-            << std::setw(2) << st.wMonth + 1 << date_separator
-            << std::setw(2) << st.wDay << datetime_separator
-            << std::setw(2) << st.wHour << time_separator
-            << std::setw(2) << st.wMinute << time_separator
+        os  << std::setw(4) << st.wYear << date_separator<char_type>()
+            << std::setw(2) << st.wMonth + 1 << date_separator<char_type>()
+            << std::setw(2) << st.wDay << datetime_separator<char_type>()
+            << std::setw(2) << st.wHour << time_separator<char_type>()
+            << std::setw(2) << st.wMinute << time_separator<char_type>()
             << std::setw(2) << st.wSecond;
         if (subsecond_precision > 0) {
-            os << nanoseconds_separator;
+            os << nanoseconds_separator<char_type>();
             long n = 1;
             for (int i = 0; i < 9 - subsecond_precision; ++i) {
                 n *= 10;
@@ -104,14 +126,14 @@ public:
         const struct std::tm* tp = localtime(&t.tv_sec);
         time_info = *tp;
 #endif
-        os  << std::setw(4) << time_info.tm_year + 1900 << date_separator
-            << std::setw(2) << time_info.tm_mon + 1 << date_separator
-            << std::setw(2) << time_info.tm_mday << datetime_separator
-            << std::setw(2) << time_info.tm_hour << time_separator
-            << std::setw(2) << time_info.tm_min << time_separator
+        os  << std::setw(4) << time_info.tm_year + 1900 << date_separator<char_type>()
+            << std::setw(2) << time_info.tm_mon + 1 << date_separator<char_type>()
+            << std::setw(2) << time_info.tm_mday << datetime_separator<char_type>()
+            << std::setw(2) << time_info.tm_hour << time_separator<char_type>()
+            << std::setw(2) << time_info.tm_min << time_separator<char_type>()
             << std::setw(2) << time_info.tm_sec;
         if (subsecond_precision > 0) {
-            os << nanoseconds_separator;
+            os << nanoseconds_separator<char_type>();
             long n = 1;
             for (int i = 0; i < 9 - subsecond_precision; ++i) {
                 n *= 10;
@@ -122,14 +144,14 @@ public:
         struct std::tm* tp;
         int nsec = 0;
         tp = localtime(&rawtime);
-        os  << std::setw(4) << tp->tm_year + 1900 << date_separator
-            << std::setw(2) << tp->tm_mon + 1 << date_separator
-            << std::setw(2) << tp->tm_mday << datetime_separator
-            << std::setw(2) << tp->tm_hour << time_separator
-            << std::setw(2) << tp->tm_min << time_separator
+        os  << std::setw(4) << tp->tm_year + 1900 << date_separator<char_type>()
+            << std::setw(2) << tp->tm_mon + 1 << date_separator<char_type>()
+            << std::setw(2) << tp->tm_mday << datetime_separator<char_type>()
+            << std::setw(2) << tp->tm_hour << time_separator<char_type>()
+            << std::setw(2) << tp->tm_min << time_separator<char_type>()
             << std::setw(2) << tp->tm_sec;
         if (subsecond_precision > 0) {
-            os << nanoseconds_separator;
+            os << nanoseconds_separator<char_type>();
             long n = 1;
             for (int i = 0; i < 9 - subsecond_precision; ++i) {
                 n *= 10;

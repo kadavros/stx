@@ -9,51 +9,60 @@
 
 namespace stx {
 
-class rolling_file_logger: public basic_logger
+template <
+    class CharType,
+    class CharTraits = std::char_traits<CharType>,
+    class Allocator = std::allocator<CharType>,
+    class Formatter = log_formatter<CharType, CharTraits, Allocator>
+>
+class basic_rolling_file_logger:
+    public basic_logger<CharType, CharTraits, Allocator, Formatter>
 {
 public:
     
-    rolling_file_logger(
-        const std::string& delimiter = "",
-        int log_level = log_level_all):
-            basic_logger(delimiter, log_level)
+    typedef abstract_logger<Formatter, CharType, CharTraits, Allocator> abstract_logger_type;
+    typedef CharType char_type;
+    typedef std::basic_string<CharType, CharTraits, Allocator> string_type;
+    typedef std::basic_ostream<CharType, CharTraits> ostream_type;
+    typedef basic_logger<CharType, CharTraits, Allocator, Formatter> basic_logger_type;
+    typedef std::basic_ofstream<CharType, CharTraits> ofstream_type;
+    typedef std::basic_ostringstream<CharType, CharTraits, Allocator> ostringstream_type;
+    
+    basic_rolling_file_logger(int log_level = log_level_all): basic_logger_type(log_level)
     {
     }
     
-    rolling_file_logger(
-        const std::string& file_name,
+    basic_rolling_file_logger(
+        const string_type& file_name,
         std::size_t max_file_size = std::numeric_limits<int>::max(),
-        const std::string& delimiter = "",
         int log_level = log_level_all)
     {
-        create(file_name, max_file_size, delimiter, log_level);
+        create(file_name, max_file_size, log_level);
     }
     
     void create(
         const std::string& file_name,
         std::size_t max_file_size = std::numeric_limits<int>::max(),
-        const std::string& delimiter = "",
         int log_level = log_level_all)
     {
-        file_.exceptions(std::ifstream::eofbit | std::ifstream::failbit | std::ifstream::badbit);
+        file_.exceptions(ofstream_type::eofbit | ofstream_type::failbit | ofstream_type::badbit);
         file_.open(file_name.c_str(), std::ios_base::out | std::ios_base::binary);
-        level_ = log_level;
-        delimiter_ = delimiter;
+        basic_logger_type::set_level(log_level);
         max_file_size_ = max_file_size;
     }
     
-    virtual std::ostream& stream()
+    virtual ostream_type& stream()
     {
         return ss_;
     }
     
     void start_formatting(int message_level)
     {
-        ss_.str("");
-        basic_logger::start_formatting(message_level);
+        ss_.str(""); //todo make portable for wchar_t
+        basic_logger_type::start_formatting(message_level);
     }
     
-    void finish_formatting(log_formatter& fmt)
+    void finish_formatting(Formatter& fmt)
     {
         if (fmt.enabled()) {
             stream() << std::endl;
@@ -67,7 +76,7 @@ public:
                 file_.seekp(0, std::ios_base::beg);
                 file_.write(ss_.str().c_str(), max_size);
             } else {
-                std::string buf_str = ss_.str();
+                string_type buf_str = ss_.str();
                 file_.write(buf_str.c_str(), remaining_size);
                 file_.seekp(0, std::ios_base::beg);
                 file_.write(buf_str.c_str() + remaining_size, message_size - remaining_size);
@@ -81,7 +90,7 @@ public:
         return max_file_size_;
     }
     
-    rolling_file_logger& set_max_file_size(std::size_t size)
+    basic_rolling_file_logger& set_max_file_size(std::size_t size)
     {
         max_file_size_ = size;
         return *this;
@@ -99,15 +108,18 @@ public:
     
 protected:
     
-    std::size_t stream_str_size(std::ostringstream& ss)
+    std::size_t stream_str_size(ostringstream_type& ss)
     {
         return ss.str().size();
     }
     
-    std::ofstream file_;
+    ofstream_type file_;
     std::size_t max_file_size_;
-    std::ostringstream ss_;
+    ostringstream_type ss_;
 };
+
+typedef basic_rolling_file_logger<char> rolling_file_logger;
+typedef basic_rolling_file_logger<wchar_t> wrolling_file_logger;
 
 } // namespace stx
 
