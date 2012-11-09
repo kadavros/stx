@@ -28,16 +28,12 @@ public:
     {
     }
     
-    basic_file_logger(
-        const std::string& file_name,
-        int log_level = log_level_all)
+    basic_file_logger(const std::string& file_name, int log_level = log_level_all)
     {
         create(file_name, log_level);
     }
     
-    void create(
-        const std::string& file_name,
-        int log_level = log_level_all)
+    void create(const std::string& file_name, int log_level = log_level_all)
     {
         file_.exceptions(ofstream_type::eofbit | ofstream_type::failbit | ofstream_type::badbit);
         file_.open(file_name.c_str(), std::ios_base::out | std::ios_base::binary);

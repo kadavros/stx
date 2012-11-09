@@ -44,7 +44,7 @@ public:
     
     virtual void set_delimiter(const string_type& s) = 0;
     
-    virtual string_type level_to_string(int message_level) const = 0;
+    virtual const char* level_to_string(int message_level) const = 0;
     
     virtual bool enabled(int message_level) const = 0;
     

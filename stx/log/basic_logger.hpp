@@ -8,6 +8,15 @@
 
 namespace stx {
 
+//  TODO
+//  wostream supports operator<<() for following types:
+//      - const char*
+//      - const wchar_t*
+//      - std::wstring
+//  but not for std::string.
+//  May be we could provide operator<<() for std::string via std::string.c_str()
+//  function.
+
 enum {
     log_level_all = 0,
     log_level_trace,
@@ -18,39 +27,6 @@ enum {
     log_level_fatal,
     log_level_none = 255
 };
-
-template <class CharType>
-inline const CharType* g_level_to_string(int level);
-
-template <>
-inline const char* g_level_to_string<char>(int level)
-{
-    const char* p = "UNKNOWN";
-    switch (level) {
-    case log_level_trace: p = "TRACE"; break;
-    case log_level_debug: p = "DEBUG"; break;
-    case log_level_info:  p = "INFO "; break;
-    case log_level_warn:  p = "WARN "; break;
-    case log_level_error: p = "ERROR"; break;
-    case log_level_fatal: p = "FATAL"; break;
-    }
-    return p;
-}
-
-template <>
-inline const wchar_t* g_level_to_string<wchar_t>(int level)
-{
-    const wchar_t* p = L"UNKNOWN";
-    switch (level) {
-    case log_level_trace: p = L"TRACE"; break;
-    case log_level_debug: p = L"DEBUG"; break;
-    case log_level_info:  p = L"INFO "; break;
-    case log_level_warn:  p = L"WARN "; break;
-    case log_level_error: p = L"ERROR"; break;
-    case log_level_fatal: p = L"FATAL"; break;
-    }
-    return p;
-}
 
 //  Basic logger - includes all interface functions except stream() -
 //  it must be implemented in derived classes.
@@ -140,9 +116,18 @@ public:
         delimiter_ = s;
     }
     
-    string_type level_to_string(int message_level) const
+    const char* level_to_string(int message_level) const
     {
-        return string_type(g_level_to_string<char_type>(message_level));
+        const char* p = "UNKNOWN";
+        switch (message_level) {
+        case log_level_trace: p = "TRACE"; break;
+        case log_level_debug: p = "DEBUG"; break;
+        case log_level_info:  p = "INFO "; break;
+        case log_level_warn:  p = "WARN "; break;
+        case log_level_error: p = "ERROR"; break;
+        case log_level_fatal: p = "FATAL"; break;
+        }
+        return p;
     }
     
     bool enabled(int message_level) const
