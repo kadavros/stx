@@ -7,15 +7,13 @@
 
 namespace stx {
 
+namespace detail {
+
 template <class T> T& cout_logger();
 template <> ostream_logger& cout_logger<ostream_logger>()
 {
     static ostream_logger log(std::cout);
     return log;
-}
-inline ostream_logger& cout_logger()
-{
-    return cout_logger<ostream_logger>();
 }
 
 template <class T> T& wcout_logger();
@@ -24,20 +22,12 @@ template <> wostream_logger& wcout_logger<wostream_logger>()
     static wostream_logger log(std::wcout);
     return log;
 }
-inline wostream_logger& wcout_logger()
-{
-    return wcout_logger<wostream_logger>();
-}
 
 template <class T> T& clog_logger();
 template <> ostream_logger& clog_logger<ostream_logger>()
 {
     static ostream_logger log(std::clog);
     return log;
-}
-inline ostream_logger& clog_logger()
-{
-    return clog_logger<ostream_logger>();
 }
 
 template <class T> T& wclog_logger();
@@ -46,12 +36,6 @@ template <> wostream_logger& wclog_logger<wostream_logger>()
     static wostream_logger log(std::wclog);
     return log;
 }
-inline wostream_logger& wclog_logger()
-{
-    return wclog_logger<wostream_logger>();
-}
-
-namespace detail {
 
 template <class T> int global_logger_nifty_counter(int x = 0);
 template<> int global_logger_nifty_counter<int>(int x)
@@ -103,6 +87,27 @@ struct global_logger_initializer
 static global_logger_initializer g_global_logger_initializer;
 
 } // namespace detail
+
+inline ostream_logger& cout_logger()
+{
+    return detail::cout_logger<ostream_logger>();
+}
+
+inline wostream_logger& wcout_logger()
+{
+    return detail::wcout_logger<wostream_logger>();
+}
+
+inline ostream_logger& clog_logger()
+{
+    return detail::clog_logger<ostream_logger>();
+}
+
+inline wostream_logger& wclog_logger()
+{
+    return detail::wclog_logger<wostream_logger>();
+}
+
 } // namespace stx
 
 #endif // STX_LOG_GLOBAL_LOGGER_HPP
