@@ -39,6 +39,10 @@ public:
     typedef std::basic_ostream<CharType, CharTraits> stream_type;
     typedef std::basic_ios<CharType, CharTraits> ios_type;
     
+    log_formatter(): enabled_(0)
+    {
+    }
+    
     log_formatter(logger_type& logger, bool enabled):
         logger_(logger),
         enabled_(enabled),
@@ -140,7 +144,7 @@ public:
             if (!first_record_) {
                 logger().print_delimiter();
             } else {
-                first_record_ = false;
+                first_record_ = 0;
             }
             logger().stream() << x;
         }
@@ -156,7 +160,9 @@ public:
     
     ~log_formatter()
     {
-        logger().finish_formatting(*this);
+        if (enabled_) {
+            logger().finish_formatting(*this);
+        }
     }
     
 private:

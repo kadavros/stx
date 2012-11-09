@@ -17,6 +17,7 @@ class abstract_logger
 public:
     
     typedef abstract_logger<Formatter, CharType, CharTraits, Allocator> abstract_logger_type;
+    typedef Formatter formatter_type;
     typedef CharType char_type;
     typedef std::basic_string<CharType, CharTraits, Allocator> string_type;
     typedef std::basic_ostream<CharType, CharTraits> ostream_type;

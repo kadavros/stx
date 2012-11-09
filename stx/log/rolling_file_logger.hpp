@@ -9,6 +9,18 @@
 
 namespace stx {
 
+template <class CharTraits, class Allocator>
+inline void reset(std::basic_ostringstream<char, CharTraits, Allocator>& s)
+{
+    s.str("");
+}
+
+template <class CharTraits, class Allocator>
+inline void reset(std::basic_ostringstream<wchar_t, CharTraits, Allocator>& s)
+{
+    s.str(L"");
+}
+
 template <
     class CharType,
     class CharTraits = std::char_traits<CharType>,
@@ -28,12 +40,16 @@ public:
     typedef std::basic_ofstream<CharType, CharTraits> ofstream_type;
     typedef std::basic_ostringstream<CharType, CharTraits, Allocator> ostringstream_type;
     
-    basic_rolling_file_logger(int log_level = log_level_all): basic_logger_type(log_level)
+    basic_rolling_file_logger(
+        int log_level = log_level_all,
+        std::size_t max_file_size = std::numeric_limits<int>::max()):
+            basic_logger_type(log_level),
+            max_file_size_(max_file_size)
     {
     }
     
     basic_rolling_file_logger(
-        const string_type& file_name,
+        const std::string& file_name,
         std::size_t max_file_size = std::numeric_limits<int>::max(),
         int log_level = log_level_all)
     {
@@ -58,7 +74,8 @@ public:
     
     void start_formatting(int message_level)
     {
-        ss_.str(""); //todo make portable for wchar_t
+        //ss_.str(""); //todo make portable for wchar_t
+        reset(ss_);
         basic_logger_type::start_formatting(message_level);
     }
     

@@ -29,14 +29,14 @@ public:
     }
     
     basic_file_logger(
-        const string_type& file_name,
+        const std::string& file_name,
         int log_level = log_level_all)
     {
         create(file_name, log_level);
     }
     
     void create(
-        const string_type& file_name,
+        const std::string& file_name,
         int log_level = log_level_all)
     {
         file_.exceptions(ofstream_type::eofbit | ofstream_type::failbit | ofstream_type::badbit);

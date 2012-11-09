@@ -152,7 +152,6 @@ typedef basic_syslog_logger<char> syslog_logger;
 
 } // namespace stx
 
-//#endif // STX_HAS_SYSLOG
 #endif // STX_PLATFORM_UNIX
 
 #endif // STX_LOG_SYSLOG_LOGGER_HPP

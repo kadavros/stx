@@ -4,6 +4,7 @@
 #include <stx/log/abstract_logger.hpp>
 #include <stx/log/log_formatter.hpp>
 #include <stx/log/date_time.hpp>
+#include <vector>
 
 namespace stx {
 
@@ -65,10 +66,11 @@ class basic_logger:
 public:
     
     typedef abstract_logger<Formatter, CharType, CharTraits, Allocator> abstract_logger_type;
+    typedef basic_logger<CharType, CharTraits, Allocator, Formatter> basic_logger_type;
+    typedef Formatter formatter_type;
     typedef CharType char_type;
     typedef std::basic_string<CharType, CharTraits, Allocator> string_type;
     typedef std::basic_ostream<CharType, CharTraits> ostream_type;
-    typedef basic_logger<CharType, CharTraits, Allocator, Formatter> basic_logger_type;
     
     basic_logger(int log_level = log_level_all): level_(log_level)
     {
@@ -157,8 +159,8 @@ public:
     
     void start_formatting(int message_level)
     {
-        log::local_time<CharType, CharTraits, Allocator> lt;
-        lt.print(stream()) << " ";
+        log::local_time<CharType, CharTraits, Allocator> t;
+        t.print(stream()) << " ";
         stream() << level_to_string(message_level) << " ";
     }
     
@@ -169,10 +171,18 @@ public:
         }
     }
     
+    //  Additional methods, not included in abstract_logger.
+    
+    void append(abstract_logger_type& _log)
+    {
+        appended_loggers.push_back(&_log);
+    }
+    
 protected:
     
     int level_;
     string_type delimiter_;
+    std::vector<abstract_logger_type*> appended_loggers;
 };
 
 typedef basic_logger<char> logger;

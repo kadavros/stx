@@ -1,12 +1,12 @@
 #ifndef STX_LOG_HPP
 #define STX_LOG_HPP
 
-#define STX_LOG_TRACE(x) get_logger().trace() << x
-#define STX_LOG_DEBUG(x) get_logger().debug() << x
-#define STX_LOG_INFO(x)  get_logger().info()  << x
-#define STX_LOG_WARN(x)  get_logger().warn()  << x
-#define STX_LOG_ERROR(x) get_logger().error() << x
-#define STX_LOG_FATAL(x) get_logger().fatal() << x
+#define STX_LOG_TRACE(x) if (log_level_trace >= get_logger().level()) { get_logger().trace() << x; }
+#define STX_LOG_DEBUG(x) if (log_level_debug >= get_logger().level()) { get_logger().debug() << x; }
+#define STX_LOG_INFO(x)  if (log_level_info  >= get_logger().level()) { get_logger().info()  << x; }
+#define STX_LOG_WARN(x)  if (log_level_warn  >= get_logger().level()) { get_logger().warn()  << x; }
+#define STX_LOG_ERROR(x) if (log_level_error >= get_logger().level()) { get_logger().error() << x; }
+#define STX_LOG_FATAL(x) if (log_level_fatal >= get_logger().level()) { get_logger().fatal() << x; }
 
 #ifdef STX_NO_MACRO_PREFIX
 #   define LOG_TRACE STX_LOG_TRACE
@@ -29,6 +29,7 @@
 // Is there any trustworthy way to determine presense of syslog api at macro level?
 //#ifdef STX_HAS_SYSLOG
 #include <stx/log/syslog_logger.hpp>
+//#endif // STX_HAS_SYSLOG
 #endif
 
 //  Log level constants are defined in <stx/log/basic_logger.hpp> file.
