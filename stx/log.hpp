@@ -1,12 +1,12 @@
 #ifndef STX_LOG_HPP
 #define STX_LOG_HPP
 
-#define STX_LOG_TRACE(x) if (log_level_trace >= get_logger().level()) { get_logger().trace() << x; }
-#define STX_LOG_DEBUG(x) if (log_level_debug >= get_logger().level()) { get_logger().debug() << x; }
-#define STX_LOG_INFO(x)  if (log_level_info  >= get_logger().level()) { get_logger().info()  << x; }
-#define STX_LOG_WARN(x)  if (log_level_warn  >= get_logger().level()) { get_logger().warn()  << x; }
-#define STX_LOG_ERROR(x) if (log_level_error >= get_logger().level()) { get_logger().error() << x; }
-#define STX_LOG_FATAL(x) if (log_level_fatal >= get_logger().level()) { get_logger().fatal() << x; }
+#define STX_LOG_TRACE(x) if (stx::log_level_trace >= get_logger().level()) { get_logger().trace() << x; }
+#define STX_LOG_DEBUG(x) if (stx::log_level_debug >= get_logger().level()) { get_logger().debug() << x; }
+#define STX_LOG_INFO(x)  if (stx::log_level_info  >= get_logger().level()) { get_logger().info()  << x; }
+#define STX_LOG_WARN(x)  if (stx::log_level_warn  >= get_logger().level()) { get_logger().warn()  << x; }
+#define STX_LOG_ERROR(x) if (stx::log_level_error >= get_logger().level()) { get_logger().error() << x; }
+#define STX_LOG_FATAL(x) if (stx::log_level_fatal >= get_logger().level()) { get_logger().fatal() << x; }
 
 #ifdef STX_NO_MACRO_PREFIX
 #   define LOG_TRACE STX_LOG_TRACE
