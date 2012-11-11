@@ -4,7 +4,7 @@
 namespace stx {
 
 //
-//  [Thanks to chromium code base]
+//  [thanks to chromium code base]
 //
 // bit_cast<Dest,Source> is a template function that implements the
 // equivalent of "*reinterpret_cast<Dest*>(&source)".  We need this in
