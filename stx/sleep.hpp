@@ -42,21 +42,21 @@ inline void sleep(double seconds)
     }
 }
 
-//inline void sleep(time_t seconds, long nanoseconds)
-//{
-//    if (nanoseconds < 0) {
-//        //STX_THROW(std::invalid_argument, "nanoseconds < 0: " << nanoseconds);
-//    } else if (nanoseconds > 1000000000) {
-//        //STX_THROW(std::invalid_argument, "nanoseconds >= 1000000000: " << nanoseconds);
-//    }
-//    struct timespec t;
-//    t.tv_sec = seconds;
-//    t.tv_nsec = nanoseconds;
-//    int ret = nanosleep(&t, NULL);
-//    if (ret != 0) {
-//        //STX_THROW_SYSTEM_ERROR("nanosleep() failed; t.tv_sec: " << t.tv_sec << "t.tv_nsec: " << t.tv_nsec);
-//    }
-//}
+inline void sleep(time_t seconds, long nanoseconds)
+{
+    if (nanoseconds < 0) {
+        //STX_THROW(std::invalid_argument, "nanoseconds < 0: " << nanoseconds);
+    } else if (nanoseconds > 1000000000) {
+        //STX_THROW(std::invalid_argument, "nanoseconds >= 1000000000: " << nanoseconds);
+    }
+    struct timespec t;
+    t.tv_sec = seconds;
+    t.tv_nsec = nanoseconds;
+    int ret = nanosleep(&t, NULL);
+    if (ret != 0) {
+        //STX_THROW_SYSTEM_ERROR("nanosleep() failed; t.tv_sec: " << t.tv_sec << "t.tv_nsec: " << t.tv_nsec);
+    }
+}
 
 #endif // STX_PLATFORM_POSIX
 
@@ -65,6 +65,12 @@ inline void sleep(double seconds)
 inline void sleep(double seconds)
 {
     DWORD dwMilliseconds = seconds * 1000.0;
+    Sleep(dwMilliseconds);
+}
+
+inline void sleep(time_t seconds, long nanoseconds)
+{
+    DWORD dwMilliseconds = seconds * 1000 + nanoseconds / 1000000;
     Sleep(dwMilliseconds);
 }
 
