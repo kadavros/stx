@@ -28,7 +28,7 @@ union max_alignment
     void        *void_ptr_;
     void        (*void_func_ptr_)();
 #   ifdef __cplusplus
-    void        max_alignment_helper_class::*void_member_ptr_;
+    void        *max_alignment_helper_class::*void_member_ptr_;
     void        (max_alignment_helper_class::*void_member_func_ptr_)();
 #   endif
 };
