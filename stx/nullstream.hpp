@@ -6,7 +6,7 @@
 
 namespace stx {
 
-template<typename CharType, typename CharTraits = std::char_traits<CharType> >
+template <typename CharType, typename CharTraits = std::char_traits<CharType> >
 struct basic_nullbuf: std::basic_streambuf<CharType, CharTraits>
 {
      typedef std::basic_streambuf<CharType, CharTraits> base_type;
@@ -22,7 +22,7 @@ struct basic_nullbuf: std::basic_streambuf<CharType, CharTraits>
 typedef basic_nullbuf<char> nullbuf;
 typedef basic_nullbuf<wchar_t> wnullbuf;
 
-template<typename CharType, typename CharTraits = std::char_traits<CharType> >
+template <typename CharType, typename CharTraits = std::char_traits<CharType> >
 class basic_null_ostream: public std::basic_ostream<CharType, CharTraits>
 {
 public:
