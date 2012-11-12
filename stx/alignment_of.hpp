@@ -18,16 +18,18 @@ struct alignment_of_hack
 template <unsigned A, unsigned S>
 struct alignment_logic
 {
-   static const size_t value = A < S ? A : S;
+   enum { value = A < S ? A : S };
 };
 
 template <typename T>
 struct alignment_of
 {
-    static const size_t value = alignment_logic <
-       sizeof(alignment_of_hack<T>) - sizeof(T),
-       sizeof(T)
-    >::value;
+    enum {
+        value = alignment_logic <
+            sizeof(alignment_of_hack<T>) - sizeof(T),
+            sizeof(T)
+        >::value
+    };
 };
 
 } // namespace stx
