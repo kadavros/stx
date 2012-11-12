@@ -1,42 +1,42 @@
 #ifndef STX_SAFE_REALLOC_HPP
 #define STX_SAFE_REALLOC_HPP
 
-#include <cstddef>
-#include <cstdlib>
+#include <stddef.h>
+#include <stdlib.h>
 
 namespace stx {
 
-inline void* safe_malloc(std::size_t size)
+inline void* safe_malloc(size_t size)
 {
     void* ret = NULL;
     if (size) {
-        ret = std::malloc(size);
+        ret = malloc(size);
     }
     return ret;
 }
 
-inline void* safe_calloc(std::size_t num, std::size_t size)
+inline void* safe_calloc(size_t num, size_t size)
 {
     void* ret = NULL;
-    if ((num <= (~((std::size_t) 0))/size) && num && size) {
-        ret = std::calloc(num, size);
+    if ((num <= (~((size_t) 0))/size) && num && size) {
+        ret = calloc(num, size);
     }
     return ret;
 }
 
 //  If size == 0 is passed, safe_realloc() corresponds to C++03' behavior:
 //  memory is freed.
-inline void* safe_realloc(void* ptr, std::size_t size)
+inline void* safe_realloc(void* ptr, size_t size)
 {
     void* ret = NULL;
     if (ptr) {
         if (size) {
-            ret = std::realloc(ptr, size);
+            ret = realloc(ptr, size);
         } else {
-            std::free(ptr);
+            free(ptr);
         }
     } else if (size) {
-        ret = std::malloc(size);
+        ret = malloc(size);
     }
     return ret;
 }

@@ -16,7 +16,7 @@
 #   endif
 #endif
 
-#include <climits>
+#include <limits.h>
 
 #ifdef LLONG_MAX
 #   define STX_HAS_LONG_LONG 1
@@ -24,7 +24,7 @@
 #   define STX_HAS_LONG_LONG 0
 #endif
 
-#include <cfloat>
+#include <float.h>
 
 #ifdef LDBL_MANT_DIG
 #   define STX_HAS_LONG_DOUBLE 1

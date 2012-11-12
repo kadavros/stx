@@ -3,7 +3,7 @@
 
 #include <stx/log/config.hpp>
 #include <string>
-#include <ctime>
+#include <time.h>
 
 #if defined(STX_PLATFORM_WINDOWS)
 #include <windows.h>
@@ -108,11 +108,11 @@ public:
             os << std::setw(subsecond_precision) << (st.wMilliseconds * (1000000/n));
         }
 #elif   defined(STX_PLATFORM_POSIX)
-        struct std::tm time_info;
+        struct tm time_info;
 #ifdef  STX_HAS_LOCALTIME_R
         localtime_r(&t.tv_sec, &time_info);
 #else
-        const struct std::tm* tp = localtime(&t.tv_sec);
+        const struct tm* tp = localtime(&t.tv_sec);
         time_info = *tp;
 #endif
         os  << std::setw(4) << time_info.tm_year + 1900 << date_separator
@@ -130,7 +130,7 @@ public:
             os << std::setw(subsecond_precision) << (t.tv_nsec/n);
         }
 #else
-        struct std::tm* tp;
+        struct tm* tp;
         int nsec = 0;
         tp = localtime(&rawtime);
         os  << std::setw(4) << tp->tm_year + 1900 << date_separator

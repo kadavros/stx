@@ -1,9 +1,9 @@
 #ifndef STX_MALLOC_ALLOCATOR_HPP
 #define STX_MALLOC_ALLOCATOR_HPP
 
-#include <cassert>
-#include <cstdlib>
 #include <new>
+#include <assert.h>
+#include <stdlib.h>
 
 namespace stx {
 
@@ -17,8 +17,8 @@ public:
     typedef const T* const_pointer;
     typedef T& reference;
     typedef const T& const_reference;
-    typedef std::size_t size_type;
-    typedef std::ptrdiff_t difference_type;
+    typedef size_t size_type;
+    typedef ptrdiff_t difference_type;
     
     template<typename T1>
     struct rebind
@@ -58,7 +58,7 @@ public:
         if (n > this->max_size()) {
             throw std::bad_alloc();
         }
-        pointer ret = static_cast<T*> (std::malloc(n * sizeof(T)));
+        pointer ret = static_cast<T*> (malloc(n * sizeof(T)));
         if (!ret) {
             throw std::bad_alloc();
         }
@@ -68,7 +68,7 @@ public:
     void deallocate(pointer p, size_type)
     {
         assert(p);
-        std::free(static_cast<void*> (p));
+        free(static_cast<void*> (p));
     }
     
     size_type max_size() const throw() 

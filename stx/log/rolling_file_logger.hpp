@@ -4,8 +4,8 @@
 #include <stx/log/basic_logger.hpp>
 #include <fstream>
 #include <sstream>
-#include <cstddef>
 #include <limits>
+#include <stddef.h>
 
 namespace stx {
 
@@ -42,7 +42,7 @@ public:
     
     basic_rolling_file_logger(
         int log_level = log_level_all,
-        std::size_t max_file_size = std::numeric_limits<int>::max()):
+        size_t max_file_size = std::numeric_limits<int>::max()):
             basic_logger_type(log_level),
             max_file_size_(max_file_size)
     {
@@ -50,7 +50,7 @@ public:
     
     basic_rolling_file_logger(
         const std::string& file_name,
-        std::size_t max_file_size = std::numeric_limits<int>::max(),
+        size_t max_file_size = std::numeric_limits<int>::max(),
         int log_level = log_level_all)
     {
         create(file_name, max_file_size, log_level);
@@ -58,7 +58,7 @@ public:
     
     void create(
         const std::string& file_name,
-        std::size_t max_file_size = std::numeric_limits<int>::max(),
+        size_t max_file_size = std::numeric_limits<int>::max(),
         int log_level = log_level_all)
     {
         file_.exceptions(ofstream_type::eofbit | ofstream_type::failbit | ofstream_type::badbit);
@@ -83,7 +83,7 @@ public:
     {
         if (fmt.enabled()) {
             stream() << std::endl;
-            std::size_t max_size = max_file_size(),
+            size_t max_size = max_file_size(),
                 current_size = current_file_size(),
                 remaining_size = max_size - current_size,
                 message_size = stream_str_size(ss_);
@@ -102,36 +102,36 @@ public:
         }
     }
     
-    std::size_t max_file_size() const
+    size_t max_file_size() const
     {
         return max_file_size_;
     }
     
-    basic_rolling_file_logger& set_max_file_size(std::size_t size)
+    basic_rolling_file_logger& set_max_file_size(size_t size)
     {
         max_file_size_ = size;
         return *this;
     }
     
-    std::size_t current_file_size()
+    size_t current_file_size()
     {
         std::streampos p = file_.tellp();
         if (p == std::streampos(-1)) {
             file_.seekp(0, std::ios_base::beg);
             p = std::streampos(0);
         }
-        return std::size_t(p);
+        return size_t(p);
     }
     
 protected:
     
-    std::size_t stream_str_size(ostringstream_type& ss)
+    size_t stream_str_size(ostringstream_type& ss)
     {
         return ss.str().size();
     }
     
     ofstream_type file_;
-    std::size_t max_file_size_;
+    size_t max_file_size_;
     ostringstream_type ss_;
 };
 
