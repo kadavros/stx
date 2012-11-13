@@ -26,12 +26,12 @@ inline bool index_sort_impl(
     
     //  Suppose "Integer" is "unsigned long", max_value == ULONG_MAX,
     //  min_value == 0, and size_t also has underlying type "unsigned long".
-    //  Then tmp_array_size will equal UINT_MAX + 1, which can't
+    //  Then tmp_array_size will equal ULONG_MAX + 1, which can't
     //  be represented with "unsigned long" type. In this case we must
     //  handle this situation somehow, for example: count how much values
-    //  equal UINT_MAX, store this value as num_size_t_max_values, then
-    //  assign those values UINT_MAX - 1, and after sorting is
-    //  complete assign last num_size_t_max_values values UINT_MAX.
+    //  equal ULONG_MAX, store this value as num_size_t_max_values, then
+    //  assign those values ULONG_MAX - 1, and after sorting is
+    //  complete assign last num_size_t_max_values values ULONG_MAX.
     size_t tmp_array_size;
     bool special_case = false;
     size_t num_size_t_max_values = 0;
