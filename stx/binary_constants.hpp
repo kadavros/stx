@@ -3,10 +3,10 @@
 
 #ifdef STX_NO_MACRO_PREFIX
 #   define BIN8(x)  STX_BIN8(x)
-#   define BIN16(x) STX_BIN16(x)
-#   define BIN24(x) STX_BIN24(x)
-#   define BIN32(x) STX_BIN32(x)
-#   define BIN64(x) STX_BIN64(x)
+#   define BIN16(x1, x2) STX_BIN16(x1, x2)
+#   define BIN24(x1, x2, x3) STX_BIN24(x1, x2, x3)
+#   define BIN32(x1, x2, x3, x4) STX_BIN32(x1, x2, x3, x4)
+#   define BIN64(x1, x2, x3, x4, x5, x6, x7, x8) STX_BIN64(x1, x2, x3, x4, x5, x6, x7, x8)
 #endif
 
 #define STX_BIN8_IMPL(x) (               \
