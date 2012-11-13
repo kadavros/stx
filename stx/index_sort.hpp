@@ -2,9 +2,10 @@
 #define STX_INDEX_SORT_HPP
 
 #include <stddef.h> // size_t
-#include <stdlib.h> // malloc()
 #include <limits.h> // UCHAR_MAX, USHRT_MAX, UINT_MAX, ULONG_MAX, ULLONG_MAX
 #include <iterator> // advance(), distance(), iterator_traits
+#include <vector>   // vector
+#include <new>      // bad_alloc
 
 #ifndef SIZE_T_MAX
 #   define SIZE_T_MAX (~((size_t) 0))
@@ -62,13 +63,11 @@ inline bool index_sort_impl(
         }
     }
     
-    TmpArrayType* tmp_array = (TmpArrayType*) malloc(tmp_array_size * sizeof(TmpArrayType));
-    if (!tmp_array) {
+    std::vector<TmpArrayType> tmp_array;
+    try {
+        tmp_array.resize(tmp_array_size, 0);
+    } catch (std::bad_alloc& e) {
         return false;
-    }
-    
-    for (n = 0; n < tmp_array_size; ++n) {
-        tmp_array[n] = 0;
     }
     
     i = first;
@@ -97,8 +96,6 @@ inline bool index_sort_impl(
             *i = SIZE_T_MAX;
         }
     }
-    
-    free(tmp_array);
     
     return true;
 }
