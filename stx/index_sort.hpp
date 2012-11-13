@@ -20,7 +20,7 @@ inline bool index_sort_impl(
     Integer min_value,
     Integer max_value)
 {
-    if (!size) {
+    if (size <= 1) {
         return true;
     }
     
@@ -107,7 +107,7 @@ inline bool index_sort(
     Integer max_value)
 {
     bool ret = true;
-    if (!size) {
+    if (size <= 1) {
         return ret;
     }
     
@@ -132,7 +132,7 @@ inline bool index_sort(
 template <class ForwardIterator>
 inline bool index_sort(ForwardIterator first, size_t size)
 {
-    if (!size) {
+    if (size <= 1) {
         return true;
     }
     typedef typename std::iterator_traits<ForwardIterator>::value_type value_type;
