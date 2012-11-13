@@ -51,7 +51,7 @@ namespace stx {
 
 inline logger& get_logger()
 {
-    return detail::global_logger<logger>();
+    return detail::global_logger<logger>((logger*) NULL);
 }
 
 inline void set_logger(logger& log)

@@ -78,7 +78,7 @@ struct global_logger_initializer
             wcout_logger<wostream_logger>();
             clog_logger<ostream_logger>();
             wclog_logger<wostream_logger>();
-            global_logger<logger>();
+            global_logger<logger>((logger*) NULL);
         }
         global_logger_nifty_counter<int>(1);
     }
