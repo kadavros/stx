@@ -32,11 +32,11 @@ public:
     
     elapsed_timer()
     {
-        restart();
+        reset();
     }
     
     // Restart timer.
-    void restart()
+    void reset()
     {
         int ret = clock_gettime(STX_DEFAULT_POSIX_CLOCK, &t1);
         if (ret) {
@@ -70,11 +70,11 @@ public:
     
     elapsed_timer()
     {
-        restart();
+        reset();
     }
     
     // Restart timer.
-    void restart()
+    void reset()
     {
         BOOL ret = QueryPerformanceCounter(&t1);
         if (!ret) {
