@@ -1,6 +1,8 @@
 #ifndef STX_BIND_HPP
 #define STX_BIND_HPP
 
+#include <stx/ref.hpp>
+
 namespace stx {
 
 //  Regular function wrappers.

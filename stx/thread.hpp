@@ -4,7 +4,6 @@
 #include <stx/config.hpp>
 #include <stx/noncopyable.hpp>
 #include <stx/bind.hpp>
-#include <stx/ref.hpp>
 
 #if defined(STX_PLATFORM_POSIX)
 #include <stx/thread/thread_posix.hpp>
