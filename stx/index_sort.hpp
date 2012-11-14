@@ -22,9 +22,10 @@
 */
 
 #include <stddef.h> // size_t
-#include <stdlib.h> // malloc()
 #include <limits.h> // UCHAR_MAX, USHRT_MAX, UINT_MAX, ULONG_MAX, ULLONG_MAX
 #include <iterator> // advance(), distance(), iterator_traits
+#include <vector>   // vector
+#include <new>      // bad_alloc
 
 #ifndef SIZE_T_MAX
 #   define SIZE_T_MAX (~((size_t) 0))
@@ -39,19 +40,18 @@ inline bool index_sort_impl(
     Integer min_value,
     Integer max_value)
 {
-    if (!size) {
+    if (size <= 1) {
         return true;
     }
     
-    //  fixme
     //  Suppose "Integer" is "unsigned long", max_value == ULONG_MAX,
     //  min_value == 0, and size_t also has underlying type "unsigned long".
-    //  Then tmp_array_size will equal UINT_MAX + 1, which can't
-    //  be represented with "unsigned long" type. In this case we must use a
-    //  bigger integer type or handle this situation somehow another way,
-    //  for example: count how much values equal UINT_MAX, store this value
-    //  as M, then assign those values UINT_MAX - 1, and after sorting is
-    //  complete assign last M values UINT_MAX.
+    //  Then tmp_array_size will equal ULONG_MAX + 1, which can't
+    //  be represented with "unsigned long" type. In this case we must
+    //  handle this situation somehow, for example: count how much values
+    //  equal ULONG_MAX, store this value as num_size_t_max_values, then
+    //  assign those values ULONG_MAX - 1, and after sorting is
+    //  complete assign last num_size_t_max_values values ULONG_MAX.
     size_t tmp_array_size;
     bool special_case = false;
     size_t num_size_t_max_values = 0;
@@ -82,13 +82,11 @@ inline bool index_sort_impl(
         }
     }
     
-    TmpArrayType* tmp_array = (TmpArrayType*) malloc(tmp_array_size * sizeof(TmpArrayType));
-    if (!tmp_array) {
+    std::vector<TmpArrayType> tmp_array;
+    try {
+        tmp_array.resize(tmp_array_size, 0);
+    } catch (std::bad_alloc& e) {
         return false;
-    }
-    
-    for (n = 0; n < tmp_array_size; ++n) {
-        tmp_array[n] = 0;
     }
     
     i = first;
@@ -118,8 +116,6 @@ inline bool index_sort_impl(
         }
     }
     
-    free(tmp_array);
-    
     return true;
 }
 
@@ -131,7 +127,7 @@ inline bool index_sort(
     Integer max_value)
 {
     bool ret = true;
-    if (!size) {
+    if (size <= 1) {
         return ret;
     }
     
@@ -167,7 +163,7 @@ inline bool index_sort(
 template <class ForwardIterator>
 inline bool index_sort(ForwardIterator first, size_t size)
 {
-    if (!size) {
+    if (size <= 1) {
         return true;
     }
     typedef typename std::iterator_traits<ForwardIterator>::value_type value_type;
