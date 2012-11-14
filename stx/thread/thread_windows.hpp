@@ -8,10 +8,12 @@ namespace stx {
 
 namespace windows {
 
-template<class CallableType>
+template<class Func>
 inline DWORD WINAPI thread_routine_win(LPVOID arg)
 {
-    (*(reinterpret_cast<CallableType*>(arg)))();
+    std::cout << "123" << std::endl;
+    //(*(reinterpret_cast<Func*>(arg)))();
+    (*((Func*) arg))();
     return 0;
 }
 
@@ -58,10 +60,12 @@ public:
         }
     }
     
-    template<class CallableType>
-    void create(CallableType callable)
+    template<class Func>
+    void create(Func func)
     {
-        create((LPTHREAD_START_ROUTINE) thread_routine_win<CallableType>, reinterpret_cast<LPVOID>(&callable));
+        static Func func_;
+        func_ = func;
+        create((LPTHREAD_START_ROUTINE) thread_routine_win<Func>, (LPVOID) &func_);
     }
     
     // todo: implement correctly

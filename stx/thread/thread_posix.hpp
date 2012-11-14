@@ -8,10 +8,10 @@ namespace stx {
 
 namespace posix {
 
-template<class CallableType>
+template<class Func>
 inline void* thread_routine(void* arg)
 {
-    (*((CallableType*) arg))();
+    (*((Func*) arg))();
     return NULL;
 }
 
@@ -63,10 +63,10 @@ public:
         }
     }
     
-    template<class CallableType>
-    void create(CallableType callable)
+    template<class Func>
+    void create(Func func)
     {
-        create(thread_routine<CallableType>, (void*) &callable);
+        create(thread_routine<Func>, (void*) &func);
     }
     
     void join()

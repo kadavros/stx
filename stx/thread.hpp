@@ -236,10 +236,10 @@ private:
     bool locked_;
 };
 
-template <class CallableType>
+template <class Func>
 inline void* thread_routine(void* arg)
 {
-    (*((CallableType*) arg))();
+    (*((Func*) arg))();
     return NULL;
 }
 
@@ -260,10 +260,58 @@ public:
     
     //  todo
     //  Add template constructors for multiple arguments. 
-    template <class CallableType>
-    thread(CallableType callable)
+    template <class Func>
+    thread(Func func)
     {
-        t.create(callable);
+        t.create(func);
+    }
+    
+    template <class Func, class A1>
+    thread(Func func, A1 a1)
+    {
+        t.create(bind(func, a1));
+    }
+    
+    template <class Func, class A1, class A2>
+    thread(Func func, A1 a1, A2 a2)
+    {
+        t.create(bind(func, a1, a2));
+    }
+    
+    template <class Func, class A1, class A2, class A3>
+    thread(Func func, A1 a1, A2 a2, A3 a3)
+    {
+        t.create(bind(func, a1, a2, a3));
+    }
+    
+    template <class Func, class A1, class A2, class A3, class A4>
+    thread(Func func, A1 a1, A2 a2, A3 a3, A4 a4)
+    {
+        t.create(bind(func, a1, a2, a3, a4));
+    }
+    
+    template <class Func, class A1, class A2, class A3, class A4, class A5>
+    thread(Func func, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5)
+    {
+        t.create(bind(func, a1, a2, a3, a4, a5));
+    }
+    
+    template <class Func, class A1, class A2, class A3, class A4, class A5, class A6>
+    thread(Func func, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6)
+    {
+        t.create(bind(func, a1, a2, a3, a4, a5, a6));
+    }
+    
+    template <class Func, class A1, class A2, class A3, class A4, class A5, class A6, class A7>
+    thread(Func func, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7)
+    {
+        t.create(bind(func, a1, a2, a3, a4, a5, a6, a7));
+    }
+    
+    template <class Func, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
+    thread(Func func, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8)
+    {
+        t.create(bind(func, a1, a2, a3, a4, a5, a6, a7, a8));
     }
     
     bool joinable() const
