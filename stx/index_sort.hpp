@@ -1,6 +1,26 @@
 #ifndef STX_INDEX_SORT_HPP
 #define STX_INDEX_SORT_HPP
 
+/*
+    index_sort - fast O(N) _integer_ sorting algorithm which uses additional
+    memory for sorting. Amount of needed memory depends basically on the range
+    of numbers in input array. Typically this algorithm allocates about
+    (max_value - min_value + 1)*sizeof(uint32_t) bytes. So it could be
+    impractical to use index_sort for input arrays which contain values
+    from 0 to UINT32_MAX, because it will require about 16 Gb of memory.
+    If index_sort fails to allocated required memory, it returns false and
+    input array remains unsorted.
+    
+    Considering the remark above, typical index_sort usage looks like this:
+        std::vector<int> v;
+        // v gets initialized here
+        if (!stx::index_sort(v)) std::sort(v.begin(), v.end());
+    
+    This is _not_ general purpose sorting algorithm, but rather an optimized
+    version for several kinds of input data (array of integers with relatively
+    narrow range of it's values).
+*/
+
 #include <stddef.h> // size_t
 #include <stdlib.h> // malloc()
 #include <limits.h> // UCHAR_MAX, USHRT_MAX, UINT_MAX, ULONG_MAX, ULLONG_MAX
@@ -131,6 +151,17 @@ inline bool index_sort(
 #   endif
     
     return ret;
+}
+
+template <class ForwardIterator, class Integer>
+inline bool index_sort(
+    ForwardIterator first,
+    ForwardIterator last,
+    Integer min_value,
+    Integer max_value)
+{
+    size_t size = std::distance(first, last);
+    return index_sort(first, size, min_value, max_value);
 }
 
 template <class ForwardIterator>
