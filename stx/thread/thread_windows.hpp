@@ -9,9 +9,9 @@ namespace stx {
 namespace windows {
 
 template<class CallableType>
-inline DWORD WINAPI thread_routine(LPVOID arg)
+inline DWORD WINAPI thread_routine_win(LPVOID arg)
 {
-    (*((CallableType*) arg))();
+    (*(reinterpret_cast<CallableType*>(arg)))();
     return 0;
 }
 
@@ -42,10 +42,15 @@ public:
     {
         LPSECURITY_ATTRIBUTES lpThreadAttributes = NULL;
         SIZE_T dwStackSize = 0; // Leads to default value.
-        DWORD dwCreationFlags = CREATE_SUSPENDED;
+        DWORD dwCreationFlags = 0; // Zero value means that thread runs immediately after creation.
         DWORD dwThreadId;
-        HANDLE handle_ = CreateThread(lpThreadAttributes, dwStackSize, lpStartAddress,
-            lpParameter, dwCreationFlags, &dwThreadId);
+        handle_ = CreateThread(
+            lpThreadAttributes,
+            dwStackSize,
+            lpStartAddress,
+            lpParameter,
+            dwCreationFlags,
+            &dwThreadId);
         if (!handle_) {
             //STX_THROW_SYSTEM_ERROR_VAL(GetLastError(), "CreateThread");
             // todo
@@ -56,7 +61,7 @@ public:
     template<class CallableType>
     void create(CallableType callable)
     {
-        create(thread_routine<CallableType>, (void*) &callable);
+        create((LPTHREAD_START_ROUTINE) thread_routine_win<CallableType>, reinterpret_cast<LPVOID>(&callable));
     }
     
     // todo: implement correctly
