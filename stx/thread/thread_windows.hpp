@@ -9,10 +9,8 @@ namespace stx {
 namespace windows {
 
 template<class Func>
-inline DWORD WINAPI thread_routine_win(LPVOID arg)
+inline DWORD WINAPI thread_routine(LPVOID arg)
 {
-    std::cout << "123" << std::endl;
-    //(*(reinterpret_cast<Func*>(arg)))();
     (*((Func*) arg))();
     return 0;
 }
@@ -65,7 +63,7 @@ public:
     {
         static Func func_;
         func_ = func;
-        create((LPTHREAD_START_ROUTINE) thread_routine_win<Func>, (LPVOID) &func_);
+        create((LPTHREAD_START_ROUTINE) thread_routine<Func>, (LPVOID) &func_);
     }
     
     // todo: implement correctly
