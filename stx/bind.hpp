@@ -241,6 +241,37 @@ private:
     A8 a8_;
 };
 
+template <class Func, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
+class callable_9
+{
+public:
+    
+    callable_9() {}
+    
+    callable_9(Func func, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9):
+        func_(func), a1_(a1), a2_(a2), a3_(a3), a4_(a4), a5_(a5), a6_(a6), a7_(a7), a8_(a8), a9_(a9)
+    {
+    }
+    
+    void operator()()
+    {
+        (*func_)(a1_, a2_, a3_, a4_, a5_, a6_, a7_, a8_, a9_);
+    }
+    
+private:
+    
+    Func func_;
+    A1 a1_;
+    A2 a2_;
+    A3 a3_;
+    A4 a4_;
+    A5 a5_;
+    A6 a6_;
+    A7 a7_;
+    A8 a8_;
+    A9 a9_;
+};
+
 template <class Func>
 inline callable_0<Func>
 bind(Func func)
@@ -311,6 +342,14 @@ bind(Func func, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8)
 {
     return callable_8<Func,  A1,  A2,  A3,  A4,  A5,  A6,  A7,  A8>
         (func, a1, a2, a3, a4, a5, a6, a7, a8);
+}
+
+template <class Func, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
+inline callable_9<Func,  A1,  A2,  A3,  A4,  A5,  A6,  A7,  A8,  A9>
+bind(Func func, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9)
+{
+    return callable_9<Func,  A1,  A2,  A3,  A4,  A5,  A6,  A7,  A8,  A9>
+        (func, a1, a2, a3, a4, a5, a6, a7, a8, a9);
 }
 
 // Member function wrappers.
@@ -556,6 +595,38 @@ private:
     A8 a8_;
 };
 
+template <class Func, class T, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
+class callable_mf_9
+{
+public:
+    
+    callable_mf_9() {}
+    
+    callable_mf_9(Func func, T p, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9):
+        func_(func), p_(p), a1_(a1), a2_(a2), a3_(a3), a4_(a4), a5_(a5), a6_(a6), a7_(a7), a8_(a8), a9_(a9)
+    {
+    }
+    
+    void operator()()
+    {
+        (p_->*func_)(a1_, a2_, a3_, a4_, a5_, a6_, a7_, a8_, a9_);
+    }
+    
+private:
+    
+    Func func_;
+    T p_;
+    A1 a1_;
+    A2 a2_;
+    A3 a3_;
+    A4 a4_;
+    A5 a5_;
+    A6 a6_;
+    A7 a7_;
+    A8 a8_;
+    A8 a9_;
+};
+
 template <class T, class R>
 inline callable_mf_0<R (T::*)(), T*>
 bind(R (T::* func)(), T* p)
@@ -626,6 +697,14 @@ bind(R (T::* func)(A1, A2, A3, A4, A5, A6, A7, A8), T* p, A1 a1, A2 a2, A3 a3, A
 {
     return callable_mf_8<R (T::*)(A1, A2, A3, A4, A5, A6, A7, A8), T*, A1, A2, A3, A4, A5, A6, A7, A8>
         (func, p, a1, a2, a3, a4, a5, a6, a7, a8);
+}
+
+template <class T, class R, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
+inline callable_mf_9<R (T::*)(A1, A2, A3, A4, A5, A6, A7, A8), T*, A1, A2, A3, A4, A5, A6, A7, A8, A9>
+bind(R (T::* func)(A1, A2, A3, A4, A5, A6, A7, A8), T* p, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9)
+{
+    return callable_mf_9<R (T::*)(A1, A2, A3, A4, A5, A6, A7, A8), T*, A1, A2, A3, A4, A5, A6, A7, A8, A9>
+        (func, p, a1, a2, a3, a4, a5, a6, a7, a8, a9);
 }
 
 } // namespace stx

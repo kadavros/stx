@@ -258,8 +258,6 @@ public:
         t = t2.t;
     }
     
-    //  todo
-    //  Add template constructors for multiple arguments. 
     template <class Func>
     thread(Func func)
     {
@@ -312,6 +310,12 @@ public:
     thread(Func func, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8)
     {
         t.create(bind(func, a1, a2, a3, a4, a5, a6, a7, a8));
+    }
+    
+    template <class Func, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
+    thread(Func func, A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9)
+    {
+        t.create(bind(func, a1, a2, a3, a4, a5, a6, a7, a8, a9));
     }
     
     bool joinable() const
