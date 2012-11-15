@@ -30,6 +30,23 @@ inline void mem_write(void* p, const T& t)
     memcpy(p, &t, sizeof(T));
 }
 
+//  mem_read_inc() and mem_write_inc() functions increment pointer to a memory
+//  by the value of read/written data.
+
+template <class T>
+inline void mem_read_inc(void*& p, T& t)
+{
+    mem_read(p, t);
+    p = (char*) p + sizeof(T);
+}
+
+template <class T>
+inline void mem_write_inc(void*& p, const T& t)
+{
+    mem_write(p, t);
+    p = (char*) p + sizeof(T);
+}
+
 } // namespace stx
 
 #endif // STX_MEM_READ_WRITE_HPP
