@@ -261,7 +261,7 @@ public:
     template <class Func>
     thread(Func func)
     {
-        t.create(func);
+        t.create(bind(func));
     }
     
     template <class Func, class A1>

@@ -66,7 +66,9 @@ public:
     template<class Func>
     void create(Func func)
     {
-        create(thread_routine<Func>, (void*) &func);
+        static Func func_;
+        func_ = func;
+        create(thread_routine<Func>, (void*) &func_);
     }
     
     void join()
