@@ -30,8 +30,8 @@ inline void mem_write(void* p, const T& t)
     memcpy(p, &t, sizeof(T));
 }
 
-//  mem_read_inc() and mem_write_inc() functions increment pointer to a memory
-//  by the value of read/written data.
+//  mem_read_inc() and mem_write_inc() functions increment pointer to
+//  a memory by the size of read/written data.
 
 template <class T>
 inline void mem_read_inc(void*& p, T& t)
