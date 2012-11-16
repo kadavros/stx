@@ -1,7 +1,7 @@
 #ifndef STX_ALIGNMENT_OF_HPP
 #define STX_ALIGNMENT_OF_HPP
 
-#include <stddef.h>
+#include <stddef.h> // size_t
 
 namespace stx {
 

@@ -1,7 +1,7 @@
-#ifndef STX_THREAD_POSIX_HPP
-#define STX_THREAD_POSIX_HPP
+#ifndef STX_THREAD_POSIX_THREAD_HPP
+#define STX_THREAD_POSIX_THREAD_HPP
 
-#include <pthread.h>
+#include <stx/thread/posix/common.hpp>
 #include <stdexcept>
 
 namespace stx {
@@ -133,4 +133,4 @@ private:
 
 } // namespace stx
 
-#endif // STX_THREAD_POSIX_HPP
+#endif // STX_THREAD_POSIX_THREAD_HPP

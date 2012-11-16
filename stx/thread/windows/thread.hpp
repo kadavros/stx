@@ -1,7 +1,7 @@
-#ifndef STX_THREAD_WINDOWS_HPP
-#define STX_THREAD_WINDOWS_HPP
+#ifndef STX_THREAD_WINDOWS_THREAD_HPP
+#define STX_THREAD_WINDOWS_THREAD_HPP
 
-#include <windows.h>
+#include <stx/thread/windows/common.hpp>
 #include <stdexcept>
 
 namespace stx {
@@ -102,4 +102,4 @@ private:
 
 } // namespace stx
 
-#endif // STX_THREAD_WINDOWS_HPP
+#endif // STX_THREAD_WINDOWS_THREAD_HPP
