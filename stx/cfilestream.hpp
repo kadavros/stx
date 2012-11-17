@@ -110,7 +110,7 @@ protected:
     void init()
     {
         close();
-        base_type::setg(buf_ + put_back_size, buf_ + put_back_size, buf_ + put_back_size);
+        base_type::setg(buf_, buf_, buf_);
     }
     
     virtual int_type overflow(int_type c)
@@ -137,26 +137,12 @@ protected:
         if (feof(fp_)) {
             return traits_type::eof();
         }
-        if (buffer_size == 1 && put_back_size == 0) {
-            char_type c = cfile_getc<char_type, int_type>(fp_);
-            if (ferror(fp_)) {
-                return traits_type::eof();
-            }
-            buf_[0] = c;
-            base_type::setg(buf_, buf_, buf_ + 1);
-        } else {
-            int num_put_back;
-            num_put_back = base_type::gptr() - base_type::eback();
-            if (num_put_back > put_back_size) {
-                num_put_back = put_back_size;
-            }
-            memmove(buf_ + (put_back_size - num_put_back), base_type::gptr() - num_put_back, num_put_back);
-            size_t num = fread(buf_ + put_back_size, sizeof(char_type), buffer_size - put_back_size, fp_);
-            if (ferror(fp_)) {
-                return traits_type::eof();
-            }
-            base_type::setg(buf_ + (put_back_size - num_put_back), buf_ + put_back_size, buf_ + put_back_size + num);
+        char_type c = cfile_getc<char_type, int_type>(fp_);
+        if (ferror(fp_)) {
+            return traits_type::eof();
         }
+        buf_[0] = c;
+        base_type::setg(buf_, buf_, buf_ + 1);
         return traits_type::to_int_type(*base_type::gptr());
     }
     
@@ -164,9 +150,7 @@ private:
     
     FILE* fp_;
     bool fp_ownership_;
-    enum { buffer_size = 1 };
-    enum { put_back_size = 0 };
-    char_type buf_[buffer_size];
+    char_type buf_[1];
 };
 
 typedef basic_cfilebuf<char> cfilebuf;
