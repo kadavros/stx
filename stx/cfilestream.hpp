@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stddef.h>
 #include <streambuf>
 #include <iostream>
 
@@ -17,18 +18,18 @@ public:
     typedef std::basic_streambuf<CharType, CharTraits> base_type;
     typedef typename base_type::int_type int_type;
     typedef CharType char_type;
-    typedef typename base_type::traits_type traits_type;
+    typedef CharTraits traits_type;
     
     basic_cfilebuf()
     {
         fp_ = NULL;
-        close_fd_ = false;
+        fp_ownership_ = false;
     }
     
-    basic_cfilebuf(FILE* fp, bool close_fd = false)
+    basic_cfilebuf(FILE* fp, bool fp_ownership = false)
     {
         fp_ = NULL;
-        open(fp, close_fd);
+        open(fp, fp_ownership);
     }
     
     basic_cfilebuf(const char* filename, const char* opentype)
@@ -47,11 +48,11 @@ public:
         return fp_;
     }
     
-    this_type* open(FILE* fp, bool close_fd = false)
+    this_type* open(FILE* fp, bool fp_ownership = false)
     {
         init();
         fp_ = fp;
-        close_fd_ = close_fd;
+        fp_ownership_ = fp_ownership;
         return this;
     }
     
@@ -59,14 +60,15 @@ public:
     {
         init();
         fp_ = fopen(filename, opentype);
-        close_fd_ = true;
+        fp_ownership_ = true;
         return this;
     }
     
     this_type* close()
     {
-        if (fp_ && close_fd_) {
+        if (fp_ && fp_ownership_) {
             fclose(fp_);
+            fp_ = NULL;
         }
         return this;
     }
@@ -81,7 +83,7 @@ protected:
     void init()
     {
         close();
-        this->setg(buf_ + put_back_size, buf_ + put_back_size, buf_ + put_back_size);
+        base_type::setg(buf_ + put_back_size, buf_ + put_back_size, buf_ + put_back_size);
     }
     
     virtual int_type overflow(int_type c)
@@ -111,31 +113,42 @@ protected:
         if (!fp_) {
             return traits_type::eof();
         }
-        if (this->gptr() < this->egptr()) {
-            return traits_type::to_int_type(*this->gptr());
+        if (base_type::gptr() < base_type::egptr()) {
+            return traits_type::to_int_type(*base_type::gptr());
         }
-        int num_put_back;
-        num_put_back = this->gptr() - this->eback();
-        if (num_put_back > put_back_size) {
-            num_put_back = put_back_size;
-        }
-        memmove(buf_ + (put_back_size - num_put_back), this->gptr() - num_put_back, num_put_back);
         if (feof(fp_)) {
             return traits_type::eof();
         }
-        size_t num = fread(buf_ + put_back_size, 1, buffer_size - put_back_size, fp_);
-        this->setg(buf_ + (put_back_size - num_put_back), buf_ + put_back_size, buf_ + put_back_size + num);
-        
-        return traits_type::to_int_type(*this->gptr());
+        if (buffer_size == 1 && put_back_size == 0) {
+            char_type c = fgetc(fp_);
+            if (ferror(fp_)) {
+                return traits_type::eof();
+            }
+            buf_[0] = c;
+            base_type::setg(buf_, buf_, buf_ + 1);
+        } else {
+            int num_put_back;
+            num_put_back = base_type::gptr() - base_type::eback();
+            if (num_put_back > put_back_size) {
+                num_put_back = put_back_size;
+            }
+            memmove(buf_ + (put_back_size - num_put_back), base_type::gptr() - num_put_back, num_put_back);
+            size_t num = fread(buf_ + put_back_size, 1, buffer_size - put_back_size, fp_);
+            if (ferror(fp_)) {
+                return traits_type::eof();
+            }
+            base_type::setg(buf_ + (put_back_size - num_put_back), buf_ + put_back_size, buf_ + put_back_size + num);
+        }
+        return traits_type::to_int_type(*base_type::gptr());
     }
     
 private:
     
     FILE* fp_;
-    bool close_fd_;
+    bool fp_ownership_;
     enum { buffer_size = 1 };
     enum { put_back_size = 0 };
-    char buf_[buffer_size];
+    char_type buf_[buffer_size];
 };
 
 typedef basic_cfilebuf<char> cfilebuf;
@@ -149,8 +162,8 @@ public:
     typedef basic_cfilebuf<CharType, CharTraits> buf_type;
     typedef std::basic_ostream<CharType, CharTraits> base_type;
     
-    basic_ocfilestream(FILE* fp, bool close_fd = false):
-        buf_(fp, close_fd)
+    basic_ocfilestream(FILE* fp, bool fp_ownership = false):
+        buf_(fp, fp_ownership)
     {
         init();
     }
@@ -166,9 +179,9 @@ public:
         return buf_.is_open();
     }
     
-    void open(FILE* fp, bool close_fd = false)
+    void open(FILE* fp, bool fp_ownership = false)
     {
-        buf_.open(fp, close_fd);
+        buf_.open(fp, fp_ownership);
     }
     
     void open(const char* filename, const char* opentype)
@@ -212,8 +225,8 @@ public:
     typedef basic_cfilebuf<CharType, CharTraits> buf_type;
     typedef std::basic_istream<CharType, CharTraits> base_type;
     
-    basic_icfilestream(FILE* fp, bool close_fd = false):
-        buf_(fp, close_fd)
+    basic_icfilestream(FILE* fp, bool fp_ownership = false):
+        buf_(fp, fp_ownership)
     {
         init();
     }
@@ -229,9 +242,9 @@ public:
         return buf_.is_open();
     }
     
-    void open(FILE* fp, bool close_fd = false)
+    void open(FILE* fp, bool fp_ownership = false)
     {
-        buf_.open(fp, close_fd);
+        buf_.open(fp, fp_ownership);
     }
     
     void open(const char* filename, const char* opentype)
@@ -275,8 +288,8 @@ public:
     typedef basic_cfilebuf<CharType, CharTraits> buf_type;
     typedef std::basic_iostream<CharType, CharTraits> base_type;
     
-    basic_cfilestream(FILE* fp, bool close_fd = false):
-        buf_(fp, close_fd)
+    basic_cfilestream(FILE* fp, bool fp_ownership = false):
+        buf_(fp, fp_ownership)
     {
         init();
     }
@@ -292,9 +305,9 @@ public:
         return buf_.is_open();
     }
     
-    void open(FILE* fp, bool close_fd = false)
+    void open(FILE* fp, bool fp_ownership = false)
     {
-        buf_.open(fp, close_fd);
+        buf_.open(fp, fp_ownership);
     }
     
     void open(const char* filename, const char* opentype)
