@@ -31,8 +31,7 @@ inline int cfile_getc<char, int>(FILE* fp)
 }
 
 template <>
-inline std::char_traits<wchar_t>::int_type
-cfile_getc<wchar_t, std::char_traits<wchar_t>::int_type>(FILE* fp)
+inline wint_t cfile_getc<wchar_t, wint_t>(FILE* fp)
 {
     return fgetwc(fp);
 }
@@ -191,7 +190,7 @@ public:
         init();
     }
     
-    basic_ocfilestream(const char* filename, const char* opentype):
+    basic_ocfilestream(const char* filename, const char* opentype = "w"):
         buf_(filename, opentype)
     {
         init();
@@ -258,7 +257,7 @@ public:
         init();
     }
     
-    basic_icfilestream(const char* filename, const char* opentype):
+    basic_icfilestream(const char* filename, const char* opentype = "r"):
         buf_(filename, opentype)
     {
         init();
