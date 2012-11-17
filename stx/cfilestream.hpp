@@ -2,12 +2,40 @@
 #define STX_CFILESTREAM_HPP
 
 #include <stdio.h>
+#include <wchar.h>
 #include <string.h>
 #include <stddef.h>
 #include <streambuf>
 #include <iostream>
 
 namespace stx {
+
+inline int cfile_putc(int c, FILE* fp)
+{
+    return fputc(c, fp);
+}
+
+inline std::char_traits<wchar_t>::int_type
+cfile_putc(wchar_t c, FILE* fp)
+{
+    return fputwc(c, fp);
+}
+
+template <class CharType, class IntType>
+inline IntType cfile_getc(FILE* fp);
+
+template <>
+inline int cfile_getc<char, int>(FILE* fp)
+{
+    return fgetc(fp);
+}
+
+template <>
+inline std::char_traits<wchar_t>::int_type
+cfile_getc<wchar_t, std::char_traits<wchar_t>::int_type>(FILE* fp)
+{
+    return fgetwc(fp);
+}
 
 template<typename CharType, typename CharTraits = std::char_traits<CharType> >
 class basic_cfilebuf: public std::basic_streambuf<CharType, CharTraits>
@@ -92,20 +120,11 @@ protected:
             return traits_type::eof();
         }
         if (c != EOF) {
-            if (fputc(c, fp_) == EOF) {
+            if (cfile_putc(c, fp_) == EOF) {
                 return traits_type::eof();
             }
         }
         return traits_type::not_eof(c);
-    }
-    
-    virtual std::streamsize xsputn(const char_type* s, std::streamsize n)
-    {
-        size_t ret = fwrite(s, 1, n, fp_);
-        if (ret != (size_t) n) {
-            return -1;
-        }
-        return std::streamsize(n);
     }
     
     virtual int_type underflow()
@@ -120,7 +139,7 @@ protected:
             return traits_type::eof();
         }
         if (buffer_size == 1 && put_back_size == 0) {
-            char_type c = fgetc(fp_);
+            char_type c = cfile_getc<char_type, int_type>(fp_);
             if (ferror(fp_)) {
                 return traits_type::eof();
             }
@@ -133,7 +152,7 @@ protected:
                 num_put_back = put_back_size;
             }
             memmove(buf_ + (put_back_size - num_put_back), base_type::gptr() - num_put_back, num_put_back);
-            size_t num = fread(buf_ + put_back_size, 1, buffer_size - put_back_size, fp_);
+            size_t num = fread(buf_ + put_back_size, sizeof(char_type), buffer_size - put_back_size, fp_);
             if (ferror(fp_)) {
                 return traits_type::eof();
             }
@@ -161,6 +180,10 @@ public:
     
     typedef basic_cfilebuf<CharType, CharTraits> buf_type;
     typedef std::basic_ostream<CharType, CharTraits> base_type;
+    
+    basic_ocfilestream()
+    {
+    }
     
     basic_ocfilestream(FILE* fp, bool fp_ownership = false):
         buf_(fp, fp_ownership)
@@ -225,6 +248,10 @@ public:
     typedef basic_cfilebuf<CharType, CharTraits> buf_type;
     typedef std::basic_istream<CharType, CharTraits> base_type;
     
+    basic_icfilestream()
+    {
+    }
+    
     basic_icfilestream(FILE* fp, bool fp_ownership = false):
         buf_(fp, fp_ownership)
     {
@@ -287,6 +314,10 @@ public:
     
     typedef basic_cfilebuf<CharType, CharTraits> buf_type;
     typedef std::basic_iostream<CharType, CharTraits> base_type;
+    
+    basic_cfilestream()
+    {
+    }
     
     basic_cfilestream(FILE* fp, bool fp_ownership = false):
         buf_(fp, fp_ownership)
