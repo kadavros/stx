@@ -8,7 +8,7 @@
 namespace stx {
 
 template<typename CharType, typename CharTraits = std::char_traits<CharType> >
-class basic_cfilebuf: public std::basic_streambuf<CharType, CharTraits>
+class basic_ocfilebuf: public std::basic_streambuf<CharType, CharTraits>
 {
 public:
     
@@ -17,18 +17,18 @@ public:
     typedef CharType char_type;
     typedef typename base_type::traits_type traits_type;
     
-    basic_cfilebuf(FILE* fp, bool auto_close_fd = false):
+    basic_ocfilebuf(FILE* fp, bool auto_close_fd = false):
         fp_(fp), auto_close_fd_(auto_close_fd)
     {
     }
     
-    basic_cfilebuf(const char* filename, const char* opentype):
+    basic_ocfilebuf(const char* filename, const char* opentype):
         auto_close_fd_(true)
     {
         fp_ = fopen(filename, opentype);
     }
     
-    ~basic_cfilebuf()
+    ~basic_ocfilebuf()
     {
         if (auto_close_fd_ && fp_) {
             fclose(fp_);
@@ -65,23 +65,23 @@ private:
     bool auto_close_fd_;
 };
 
-typedef basic_cfilebuf<char> cfilebuf;
-typedef basic_cfilebuf<wchar_t> wcfilebuf;
+typedef basic_ocfilebuf<char> ocfilebuf;
+typedef basic_ocfilebuf<wchar_t> wocfilebuf;
 
 template<typename CharType, typename CharTraits = std::char_traits<CharType> >
-class basic_cfilestream: public std::basic_ostream<CharType, CharTraits>
+class basic_ocfilestream: public std::basic_ostream<CharType, CharTraits>
 {
 public:
     
-    typedef basic_cfilebuf<CharType, CharTraits> buf_type;
+    typedef basic_ocfilebuf<CharType, CharTraits> buf_type;
     
-    basic_cfilestream(FILE* fp, bool auto_close_fd = false):
+    basic_ocfilestream(FILE* fp, bool auto_close_fd = false):
         buf(fp, auto_close_fd)
     {
         rdbuf(&buf);
     }
     
-    basic_cfilestream(const char* filename, const char* opentype):
+    basic_ocfilestream(const char* filename, const char* opentype):
         buf(filename, opentype)
     {
         rdbuf(&buf);
@@ -89,11 +89,11 @@ public:
     
 protected:
     
-    basic_cfilebuf<CharType, CharTraits> buf;
+    basic_ocfilebuf<CharType, CharTraits> buf;
 };
 
-typedef basic_cfilestream<char> cfilestream;
-typedef basic_cfilestream<wchar_t> wcfilestream;
+typedef basic_ocfilestream<char> ocfilestream;
+typedef basic_ocfilestream<wchar_t> wocfilestream;
 
 } // namespace stx
 
