@@ -2,7 +2,6 @@
 #define STX_THREAD_HPP
 
 #include <stx/config.hpp>
-#include <stx/noncopyable.hpp>
 #include <stx/bind.hpp>
 
 #if defined(STX_PLATFORM_POSIX)
@@ -23,7 +22,7 @@ namespace stx {
 namespace stx {
 
 template <class Mutex>
-class lock_guard: noncopyable
+class lock_guard
 {
 public:
     
@@ -40,11 +39,14 @@ public:
     
 private:
     
+    lock_guard(const lock_guard<Mutex>&);
+    const lock_guard<Mutex>& operator=(const lock_guard<Mutex>&);
+    
     Mutex* pm;
 };
 
 template <class Mutex>
-class unique_lock: noncopyable
+class unique_lock
 {
 public:
     
@@ -91,6 +93,9 @@ public:
     }
     
 private:
+    
+    unique_lock(const unique_lock<Mutex>&);
+    const unique_lock<Mutex>& operator=(const unique_lock<Mutex>&);
     
     Mutex* pm;
     bool locked_;
