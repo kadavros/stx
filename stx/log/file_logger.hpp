@@ -37,7 +37,7 @@ public:
     {
         file_.exceptions(ofstream_type::eofbit | ofstream_type::failbit | ofstream_type::badbit);
         file_.open(file_name.c_str(), std::ios_base::out | std::ios_base::binary);
-        basic_logger_type::set_level(log_level);
+        this->set_level(log_level);
     }
     
     virtual ostream_type& stream()

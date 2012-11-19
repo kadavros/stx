@@ -63,7 +63,7 @@ public:
     {
         file_.exceptions(ofstream_type::eofbit | ofstream_type::failbit | ofstream_type::badbit);
         file_.open(file_name.c_str(), std::ios_base::out | std::ios_base::binary);
-        basic_logger_type::set_level(log_level);
+        this->set_level(log_level);
         max_file_size_ = max_file_size;
     }
     
@@ -76,7 +76,7 @@ public:
     {
         //ss_.str(""); //todo make portable for wchar_t
         reset(ss_);
-        basic_logger_type::start_formatting(message_level);
+        this->start_formatting(message_level);
     }
     
     void finish_formatting(Formatter& fmt)
