@@ -30,6 +30,36 @@ inline void mem_write(void* p, const T& t)
     memcpy(p, &t, sizeof(T));
 }
 
+inline void mem_read(const void* p, char& t)
+{
+    t = *(char*) p;
+}
+
+inline void mem_read(const void* p, signed char& t)
+{
+    t = *(signed char*) p;
+}
+
+inline void mem_read(const void* p, unsigned char& t)
+{
+    t = *(unsigned char*) p;
+}
+
+inline void mem_write(void* p, char t)
+{
+    *(char*) p = t;
+}
+
+inline void mem_write(void* p, signed char t)
+{
+    *(signed char*) p = t;
+}
+
+inline void mem_write(void* p, unsigned char t)
+{
+    *(unsigned char*) p = t;
+}
+
 //  mem_read_inc() and mem_write_inc() functions increment pointer to
 //  a memory by the size of read/written data.
 
@@ -45,6 +75,42 @@ inline void mem_write_inc(void*& p, const T& t)
 {
     mem_write(p, t);
     p = (char*) p + sizeof(T);
+}
+
+inline void mem_read_inc(const void* p, char& t)
+{
+    t = *(char*) p;
+    p = (char*) p + sizeof(char);
+}
+
+inline void mem_read_inc(const void* p, signed char& t)
+{
+    t = *(signed char*) p;
+    p = (char*) p + sizeof(signed char);
+}
+
+inline void mem_read_inc(const void* p, unsigned char& t)
+{
+    t = *(unsigned char*) p;
+    p = (char*) p + sizeof(unsigned char);
+}
+
+inline void mem_write_inc(void* p, char t)
+{
+    *(char*) p = t;
+    p = (char*) p + sizeof(char);
+}
+
+inline void mem_write_inc(void* p, signed char t)
+{
+    *(signed char*) p = t;
+    p = (char*) p + sizeof(signed char);
+}
+
+inline void mem_write_inc(void* p, unsigned char t)
+{
+    *(unsigned char*) p = t;
+    p = (char*) p + sizeof(unsigned char);
 }
 
 } // namespace stx
