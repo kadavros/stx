@@ -86,13 +86,13 @@ inline void mem_read_inc(const void* p, char& t)
 inline void mem_read_inc(const void* p, signed char& t)
 {
     t = *(signed char*) p;
-    p = (char*) p + sizeof(signed char);
+    p = (signed char*) p + sizeof(signed char);
 }
 
 inline void mem_read_inc(const void* p, unsigned char& t)
 {
     t = *(unsigned char*) p;
-    p = (char*) p + sizeof(unsigned char);
+    p = (unsigned char*) p + sizeof(unsigned char);
 }
 
 inline void mem_write_inc(void* p, char t)
@@ -104,13 +104,13 @@ inline void mem_write_inc(void* p, char t)
 inline void mem_write_inc(void* p, signed char t)
 {
     *(signed char*) p = t;
-    p = (char*) p + sizeof(signed char);
+    p = (signed char*) p + sizeof(signed char);
 }
 
 inline void mem_write_inc(void* p, unsigned char t)
 {
     *(unsigned char*) p = t;
-    p = (char*) p + sizeof(unsigned char);
+    p = (unsigned char*) p + sizeof(unsigned char);
 }
 
 } // namespace stx
