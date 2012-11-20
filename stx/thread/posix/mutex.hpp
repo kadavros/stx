@@ -8,7 +8,7 @@
 namespace stx {
 
 template <int mutex_type>
-class basic_mutex: noncopyable
+class basic_mutex
 {
 public:
     
@@ -86,6 +86,9 @@ public:
     }
     
 private:
+    
+    basic_mutex(const basic_mutex<mutex_type>&);
+    const basic_mutex<mutex_type>& operator=(const basic_mutex<mutex_type>&);
     
     pthread_mutex_t handle_;
 };

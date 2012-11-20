@@ -2,8 +2,9 @@
 #define STX_THREAD_HPP
 
 #include <stx/config.hpp>
-#include <stx/noncopyable.hpp>
 #include <stx/bind.hpp>
+#include <stx/thread/lock_guard.hpp>
+#include <stx/thread/unique_lock.hpp>
 
 #if defined(STX_PLATFORM_POSIX)
 #include <stx/thread/posix/thread.hpp>
@@ -21,80 +22,6 @@ namespace stx {
 #endif
 
 namespace stx {
-
-template <class Mutex>
-class lock_guard: noncopyable
-{
-public:
-    
-    explicit lock_guard(Mutex& m)
-    {
-        pm = &m;
-        pm->lock();
-    }
-    
-    ~lock_guard()
-    {
-        pm->unlock();
-    }
-    
-private:
-    
-    Mutex* pm;
-};
-
-template <class Mutex>
-class unique_lock: noncopyable
-{
-public:
-    
-    unique_lock()
-    {
-        pm = NULL;
-        locked_ = false;
-    }
-    
-    explicit unique_lock(Mutex& m)
-    {
-        pm = &m;
-        lock();
-    }
-    
-    ~unique_lock()
-    {
-        if (owns_lock()) {
-            pm->unlock();
-        }
-    }
-    
-    bool try_lock()
-    {
-        locked_ = pm->try_lock();
-        return locked_;
-    }
-    
-    void lock()
-    {
-        pm->lock();
-        locked_ = true;
-    }
-    
-    void unlock()
-    {
-        pm->unlock();
-        locked_ = false;
-    }
-    
-    bool owns_lock() const
-    {
-        return locked_;
-    }
-    
-private:
-    
-    Mutex* pm;
-    bool locked_;
-};
 
 template <class Func>
 inline void* thread_routine(void* arg)

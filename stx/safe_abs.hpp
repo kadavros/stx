@@ -9,7 +9,7 @@
     E.g.: abs(INT_MIN), labs(LONG_MIN), llabs(LLONG_MIN) - undefined behavior.
 */
 
-#include <stx/config.hpp>
+#include <limits.h>
 
 namespace stx {
 
@@ -35,7 +35,7 @@ inline unsigned long safe_abs(long n)
     return ret;
 }
 
-#if STX_HAS_LONG_LONG
+#ifdef LLONG_MAX
 inline unsigned long long safe_abs(long long n)
 {
     unsigned long long ret;

@@ -103,37 +103,37 @@ public:
     
     log_formatter& setiosflags(std::ios_base::fmtflags mask)
     {
-        logger().stream() << std::setiosflags(mask);
+        logger().actual_stream() << std::setiosflags(mask);
         return *this;
     }
     
     log_formatter& resetiosflags(std::ios_base::fmtflags mask)
     {
-        logger().stream() << std::resetiosflags(mask);
+        logger().actual_stream() << std::resetiosflags(mask);
         return *this;
     }
     
     log_formatter& setbase(int base)
     {
-        logger().stream() << std::setbase(base);
+        logger().actual_stream() << std::setbase(base);
         return *this;
     }
     
     log_formatter& setfill(char c)
     {
-        logger().stream() << std::setfill(c);
+        logger().actual_stream() << std::setfill(c);
         return *this;
     }
     
     log_formatter& setprecision(int n)
     {
-        logger().stream() << std::setprecision(n);
+        logger().actual_stream() << std::setprecision(n);
         return *this;
     }
     
     log_formatter& setw(int n)
     {
-        logger().stream() << std::setw(n);
+        logger().actual_stream() << std::setw(n);
         return *this;
     }
     
@@ -146,7 +146,7 @@ public:
             } else {
                 first_record_ = 0;
             }
-            logger().stream() << x;
+            logger().actual_stream() << x;
         }
     }
     
@@ -154,7 +154,7 @@ public:
     void write_to_stream_without_delimiter(const T& x)
     {
         if (enabled_) {
-            logger().stream() << x;
+            logger().actual_stream() << x;
         }
     }
     

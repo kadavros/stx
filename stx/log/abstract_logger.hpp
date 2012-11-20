@@ -1,6 +1,7 @@
 #ifndef STX_LOG_ABSTRACT_LOGGER_HPP
 #define STX_LOG_ABSTRACT_LOGGER_HPP
 
+#include <stx/log/fake_mutex.hpp>
 #include <iostream>
 #include <string>
 
@@ -51,6 +52,10 @@ public:
     virtual void print_delimiter() = 0;
     
     virtual ostream_type& stream() = 0;
+    
+    virtual ostream_type& actual_stream() = 0;
+    
+    virtual void write_message(abstract_logger_type* message_provider, const string_type& message) = 0;
     
     virtual void start_formatting(int message_level) = 0;
     

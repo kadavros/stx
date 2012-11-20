@@ -12,7 +12,18 @@
         {
             // ...
         };
+    
+    Attention! If someone forgets about noncopyable inheritance and will
+    declare public copy constructor, then it would be possible to make a
+    copy of this class object. Therefore it's more safe to declare private
+    copy constructor and assignment operator by hand.
+    Macro STX_MAKE_NONCOPYABLE(class_name) is provided for convenience.
 */
+
+#define STX_MAKE_NONCOPYABLE(class_name) \
+private: \
+    class_name(const class_name&); \
+    const class_name& operator=(const class_name&);
 
 namespace stx {
 
@@ -31,7 +42,8 @@ class noncopyable
 {
 protected:
     noncopyable() {}
-    ~noncopyable() { }
+    ~noncopyable() {}
+    
 private:
     noncopyable(const noncopyable&);
     const noncopyable& operator=(const noncopyable&);

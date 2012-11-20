@@ -5,7 +5,7 @@
 
 namespace stx {
 
-class mutex: noncopyable
+class mutex
 {
 public:
     
@@ -36,6 +36,9 @@ public:
     
 private:
     
+    mutex(const mutex&);
+    const mutex& operator=(const mutex&);
+    
     CRITICAL_SECTION critical_section_;
 };
 
@@ -53,6 +56,10 @@ private:
 
 class recursive_mutex: public mutex
 {
+private:
+    
+    recursive_mutex(const recursive_mutex&);
+    const recursive_mutex& operator=(const recursive_mutex&);
 };
 
 } // namespace stx
