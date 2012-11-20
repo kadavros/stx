@@ -52,6 +52,8 @@ public:
     
     virtual ostream_type& stream() = 0;
     
+    virtual ostream_type& actual_stream() = 0;
+    
     virtual void start_formatting(int message_level) = 0;
     
     virtual void finish_formatting(Formatter& fmt) = 0;

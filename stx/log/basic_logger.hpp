@@ -5,6 +5,7 @@
 #include <stx/log/log_formatter.hpp>
 #include <stx/log/date_time.hpp>
 #include <vector>
+#include <algorithm>
 
 namespace stx {
 
@@ -45,8 +46,10 @@ public:
     typedef basic_logger<CharType, CharTraits, Allocator, Formatter> basic_logger_type;
     typedef Formatter formatter_type;
     typedef CharType char_type;
+    typedef CharTraits traits_type;
     typedef std::basic_string<CharType, CharTraits, Allocator> string_type;
     typedef std::basic_ostream<CharType, CharTraits> ostream_type;
+    typedef std::basic_ostringstream<CharType, CharTraits, Allocator> ostringstream_type;
     
     basic_logger(int log_level = log_level_all): level_(log_level)
     {
@@ -137,22 +140,43 @@ public:
     
     void print_delimiter()
     {
-        stream() << delimiter();
+        actual_stream() << delimiter();
     }
     
     virtual ostream_type& stream() = 0;
     
+    ostream_type& actual_stream()
+    {
+        if (has_appended_loggers()) {
+            return intermediate_stream();
+        } else {
+            return stream();
+        }
+    }
+    
     void start_formatting(int message_level)
     {
         log::local_time<CharType, CharTraits, Allocator> t;
-        t.print(stream()) << " ";
-        stream() << level_to_string(message_level) << " ";
+        if (has_appended_loggers()) {
+            intermediate_stream_.str(string_type());
+        }
+        t.print(actual_stream()) << " ";
+        actual_stream() << level_to_string(message_level) << " ";
     }
     
     void finish_formatting(Formatter& fmt)
     {
         if (fmt.enabled()) {
-            stream() << std::endl;
+            actual_stream() << std::endl;
+            if (has_appended_loggers()) {
+                //stream() << intermediate_stream().rdbuf();
+                stream() << intermediate_stream().str();
+                typename std::vector<abstract_logger_type*>::iterator i;
+                for (i = appended_loggers_.begin(); i != appended_loggers_.end(); ++i) {
+                    //(*i)->stream() << intermediate_stream().rdbuf();
+                    (*i)->stream() << intermediate_stream().str();
+                }
+            }
         }
     }
     
@@ -160,14 +184,35 @@ public:
     
     void append(abstract_logger_type& _log)
     {
-        appended_loggers.push_back(&_log);
+        appended_loggers_.push_back(&_log);
+    }
+    
+    void remove_all()
+    {
+        appended_loggers_.clear();
+    }
+    
+    void remove(abstract_logger_type& _log)
+    {
+        appended_loggers_.erase(std::remove(appended_loggers_.begin(), appended_loggers_.end(), &_log));
+    }
+    
+    bool has_appended_loggers()
+    {
+        return !appended_loggers_.empty();
+    }
+    
+    ostringstream_type& intermediate_stream()
+    {
+        return intermediate_stream_;
     }
     
 protected:
     
     int level_;
     string_type delimiter_;
-    std::vector<abstract_logger_type*> appended_loggers;
+    std::vector<abstract_logger_type*> appended_loggers_;
+    ostringstream_type intermediate_stream_;
 };
 
 typedef basic_logger<char> logger;
