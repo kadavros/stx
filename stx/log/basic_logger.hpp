@@ -208,11 +208,8 @@ public:
     
     void remove(abstract_logger_type& _log)
     {
-        typename std::vector<abstract_logger_type*>::iterator i =
-            std::remove(appended_loggers_.begin(), appended_loggers_.end(), &_log);
-        if (i != appended_loggers_.end()) {
-            appended_loggers_.erase(i);
-        }
+        appended_loggers_.erase(std::remove(appended_loggers_.begin(),
+            appended_loggers_.end(), &_log), appended_loggers_.end());
     }
     
     bool has_appended_loggers()
