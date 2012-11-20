@@ -154,6 +154,20 @@ public:
         }
     }
     
+    void write_message(abstract_logger_type* message_provider, const string_type& message)
+    {
+        //  Check for recursive message write.
+        if ((abstract_logger_type*) this != message_provider) {
+            stream() << message;
+            typename std::vector<abstract_logger_type*>::iterator i;
+            for (i = appended_loggers_.begin(); i != appended_loggers_.end(); ++i) {
+                if ((abstract_logger_type*) *i != message_provider) {
+                    (*i)->write_message(message_provider, message);
+                }
+            }
+        }
+    }
+    
     void start_formatting(int message_level)
     {
         log::local_time<CharType, CharTraits, Allocator> t;
@@ -173,8 +187,8 @@ public:
                 stream() << intermediate_stream().str();
                 typename std::vector<abstract_logger_type*>::iterator i;
                 for (i = appended_loggers_.begin(); i != appended_loggers_.end(); ++i) {
-                    //(*i)->stream() << intermediate_stream().rdbuf();
-                    (*i)->stream() << intermediate_stream().str();
+                    //ntermediate_stream().rdbuf();
+                    (*i)->write_message((abstract_logger_type*) this, intermediate_stream().str());
                 }
             }
         }
@@ -194,7 +208,11 @@ public:
     
     void remove(abstract_logger_type& _log)
     {
-        appended_loggers_.erase(std::remove(appended_loggers_.begin(), appended_loggers_.end(), &_log));
+        typename std::vector<abstract_logger_type*>::iterator i =
+            std::remove(appended_loggers_.begin(), appended_loggers_.end(), &_log);
+        if (i != appended_loggers_.end()) {
+            appended_loggers_.erase(i);
+        }
     }
     
     bool has_appended_loggers()
