@@ -1,12 +1,12 @@
 #ifndef STX_LOG_HPP
 #define STX_LOG_HPP
 
-#define STX_LOG_TRACE(x) if (stx::log_level_trace >= get_logger().level()) { get_logger().trace() << x; }
-#define STX_LOG_DEBUG(x) if (stx::log_level_debug >= get_logger().level()) { get_logger().debug() << x; }
-#define STX_LOG_INFO(x)  if (stx::log_level_info  >= get_logger().level()) { get_logger().info()  << x; }
-#define STX_LOG_WARN(x)  if (stx::log_level_warn  >= get_logger().level()) { get_logger().warn()  << x; }
-#define STX_LOG_ERROR(x) if (stx::log_level_error >= get_logger().level()) { get_logger().error() << x; }
-#define STX_LOG_FATAL(x) if (stx::log_level_fatal >= get_logger().level()) { get_logger().fatal() << x; }
+#define STX_LOG_TRACE if (stx::log_level_trace < get_logger().level()); else get_logger().trace()
+#define STX_LOG_DEBUG if (stx::log_level_debug < get_logger().level()); else get_logger().debug()
+#define STX_LOG_INFO  if (stx::log_level_info  < get_logger().level()); else get_logger().info()
+#define STX_LOG_WARN  if (stx::log_level_warn  < get_logger().level()); else get_logger().warn()
+#define STX_LOG_ERROR if (stx::log_level_error < get_logger().level()); else get_logger().error()
+#define STX_LOG_FATAL if (stx::log_level_fatal < get_logger().level()); else get_logger().fatal()
 
 //  Warning: some of those short macros conflict with syslog macros.
 #ifdef STX_NO_MACRO_PREFIX
