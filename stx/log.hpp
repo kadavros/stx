@@ -8,6 +8,7 @@
 #define STX_LOG_ERROR(x) if (stx::log_level_error >= get_logger().level()) { get_logger().error() << x; }
 #define STX_LOG_FATAL(x) if (stx::log_level_fatal >= get_logger().level()) { get_logger().fatal() << x; }
 
+//  Warning: some of those short macros conflict with syslog macros.
 #ifdef STX_NO_MACRO_PREFIX
 #   define LOG_TRACE STX_LOG_TRACE
 #   define LOG_DEBUG STX_LOG_DEBUG

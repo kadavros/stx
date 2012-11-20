@@ -1,8 +1,6 @@
 #ifndef STX_ALIGNMENT_OF_HPP
 #define STX_ALIGNMENT_OF_HPP
 
-#include <stddef.h> // size_t
-
 namespace stx {
 
 template <typename T> struct alignment_of;

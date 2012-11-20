@@ -4,6 +4,7 @@
 #include <stx/log/abstract_logger.hpp>
 #include <stx/log/log_formatter.hpp>
 #include <stx/log/date_time.hpp>
+#include <stx/log/fake_mutex.hpp>
 #include <vector>
 #include <algorithm>
 
@@ -33,6 +34,7 @@ enum {
 //  it must be implemented in derived classes.
 template <
     class CharType,
+    class Mutex = fake_mutex,
     class CharTraits = std::char_traits<CharType>,
     class Allocator = std::allocator<CharType>,
     class Formatter = log_formatter<CharType, CharTraits, Allocator>
@@ -50,6 +52,7 @@ public:
     typedef std::basic_string<CharType, CharTraits, Allocator> string_type;
     typedef std::basic_ostream<CharType, CharTraits> ostream_type;
     typedef std::basic_ostringstream<CharType, CharTraits, Allocator> ostringstream_type;
+    typedef Mutex mutex_type;
     
     basic_logger(int log_level = log_level_all): level_(log_level)
     {
@@ -228,6 +231,7 @@ protected:
     string_type delimiter_;
     std::vector<abstract_logger_type*> appended_loggers_;
     ostringstream_type intermediate_stream_;
+    mutex_type mutex_;
 };
 
 typedef basic_logger<char> logger;

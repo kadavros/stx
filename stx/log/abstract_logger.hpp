@@ -1,6 +1,7 @@
 #ifndef STX_LOG_ABSTRACT_LOGGER_HPP
 #define STX_LOG_ABSTRACT_LOGGER_HPP
 
+#include <stx/log/fake_mutex.hpp>
 #include <iostream>
 #include <string>
 

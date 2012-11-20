@@ -23,12 +23,13 @@ inline void reset(std::basic_ostringstream<wchar_t, CharTraits, Allocator>& s)
 
 template <
     class CharType,
+    class Mutex = fake_mutex,
     class CharTraits = std::char_traits<CharType>,
     class Allocator = std::allocator<CharType>,
     class Formatter = log_formatter<CharType, CharTraits, Allocator>
 >
 class basic_rolling_file_logger:
-    public basic_logger<CharType, CharTraits, Allocator, Formatter>
+    public basic_logger<CharType, Mutex, CharTraits, Allocator, Formatter>
 {
 public:
     
