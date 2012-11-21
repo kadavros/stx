@@ -3,11 +3,12 @@
 
 #include <new>
 #include <assert.h>
+#include <stddef.h>
 #include <stdlib.h>
 
 namespace stx {
 
-template<typename T>
+template <typename T>
 class malloc_allocator
 {
 public:
@@ -20,7 +21,7 @@ public:
     typedef size_t size_type;
     typedef ptrdiff_t difference_type;
     
-    template<typename T1>
+    template <typename T1>
     struct rebind
     {
         typedef malloc_allocator<T1> other;
@@ -87,13 +88,13 @@ public:
     }
 };
 
-template<typename T>
+template <typename T>
 inline bool operator==(const malloc_allocator<T>&, const malloc_allocator<T>&)
 {
     return true;
 }
 
-template<typename T>
+template <typename T>
 inline bool operator!=(const malloc_allocator<T>&, const malloc_allocator<T>&)
 {
     return false;

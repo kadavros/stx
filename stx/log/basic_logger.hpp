@@ -141,6 +141,11 @@ public:
         return (message_level >= level());
     }
     
+    bool disabled(int message_level) const
+    {
+        return !enabled(message_level);
+    }
+    
     void print_delimiter()
     {
         actual_stream() << delimiter();

@@ -49,6 +49,8 @@ public:
     
     virtual bool enabled(int message_level) const = 0;
     
+    virtual bool disabled(int message_level) const = 0;
+    
     virtual void print_delimiter() = 0;
     
     virtual ostream_type& stream() = 0;

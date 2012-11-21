@@ -2,7 +2,7 @@
 #define STX_IMPLICIT_CAST_HPP
 
 /*
-    What is implicit_cast? when should I prefer implicit_cast rather than
+    What is implicit_cast? When should I prefer implicit_cast rather than
     static_cast?
     
     You can down-cast with static_cast. Not so with implicit_cast.
