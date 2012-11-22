@@ -172,6 +172,7 @@ public:
     {
         assert(first != NULL);
         assert(last != NULL);
+        assert(first < last);
         assert(*(last-1) == '\0');
         buf_ = first;
         size_ = last - first - 1;
