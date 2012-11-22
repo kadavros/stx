@@ -1,13 +1,14 @@
 #ifndef STX_CSTR_HPP
 #define STX_CSTR_HPP
 
-//  cstr - lighweight string wrapper.
+//  cstr - lightweight C-string wrapper.
 
 #include <string>
 #include <vector>
+#include <stdexcept>
 #include <string.h>
 #include <stddef.h>
-#include <stdexcept>
+#include <assert.h>
 
 namespace stx {
 
@@ -25,6 +26,9 @@ public:
     
     size_type size() const
     {
+        if (buf_ == empty_c_str() && !size_) {
+            size_ = strlen(buf_);
+        }
         return size_;
     }
     
@@ -40,7 +44,7 @@ public:
     
     void clear()
     {
-        buf_ = "";
+        buf_ = empty_c_str();
         size_ = 0;
     }
     
@@ -51,6 +55,7 @@ public:
     
     const char& operator[](size_type pos) const
     {
+        assert(pos <= size_);
         return buf_[pos];
     }
     
@@ -78,11 +83,13 @@ public:
     
     const char_type& front() const
     {
+        assert(!empty());
         return buf_[0];
     }
     
     const char_type& back() const
     {
+        assert(!empty());
         return buf_[size_ - 1];
     }
     
@@ -94,52 +101,94 @@ public:
     //  Constructors.
     
     cstr():
-        buf_(""), size_(0)
+        buf_(empty_c_str()), size_(0)
     {
     }
     
     //  For "const char*" and "const char* const" parameters.
     template <class T>
     cstr(const T& t):
-        buf_(t), size_(strlen(buf_))
+        buf_(t), size_(0)
     {
+        assert(t != NULL);
     }
     
     //  For "const char []" parametes.
+    //  Precondition: t[Size - 1] == '\0'
     template <class T, size_type Size>
-    cstr(const T (&t)[Size]):
-        buf_(t), size_(Size - 1)
+    cstr(const T (&t)[Size])
     {
+        if (!Size) {
+            clear();
+        } else {
+            assert(t[Size - 1] == '\0');
+            buf_ = t;
+            size_ = Size - 1;
+        }
     }
     
     template <class CharTraits, class Allocator>
-    cstr(const std::basic_string<char_type, CharTraits, Allocator>& s):
-        buf_(s.c_str()), size_(s.size())
+    cstr(const std::basic_string<char_type, CharTraits, Allocator>& s)
     {
+        if (s.empty()) {
+            clear();
+        } else {
+            buf_ = s.c_str();
+            size_ = s.size();
+        }
     }
     
+    //  Precondition: v[size()-1] == '\0'
     template <class Allocator>
-    cstr(const std::vector<char_type, Allocator>& v):
-        buf_(&v[0]), size_(v.size())
+    cstr(const std::vector<char_type, Allocator>& v)
     {
+        if (v.empty()) {
+            clear();
+        } else {
+            assert(v[size()-1] == '\0');
+            buf_ = &v[0];
+            size_ = v.size() - 1;
+        }
     }
     
     //  Constructors with multiple parameters.
     
+    //  Precondition: s[size] == '\0'
     cstr(const char_type* s, size_type size):
         buf_(s), size_(size)
     {
+        if (!size) {
+            clear();
+        } else {
+            assert(s != NULL);
+            assert(s[size] == '\0');
+            buf_ = s;
+            size_ = size;
+        }
     }
     
-    cstr(const char_type* begin, const char_type* end):
-        buf_(begin), size_(end - begin)
+    //  Precondition: *(last-1) == '\0'
+    cstr(const char_type* first, const char_type* last)
     {
+        assert(first != NULL);
+        assert(last != NULL);
+        assert(*(last-1) == '\0');
+        buf_ = first;
+        size_ = last - first - 1;
     }
     
+    //  Precondition: v[size] == '\0'
     template <class Allocator>
-    cstr(const std::vector<char_type, Allocator>& v, size_type size):
-        buf_(&v[0]), size_(size)
+    cstr(const std::vector<char_type, Allocator>& v, size_type size)
     {
+        if (!size) {
+            clear();
+        } else {
+            assert(v.size() >= size);
+            assert(v[size] == '\0');
+            buf_ = &v[0];
+            size_ = size;
+        }
     }
     
     //  TODO
@@ -168,8 +217,16 @@ public:
     
 private:
     
+    static const char_type* empty_c_str()
+    {
+        return "";
+    }
+    
     const char_type* buf_;
-    size_type size_;
+    
+    //  size_ is made mutable because of lazy initialization
+    //  performed in size() function.
+    mutable size_type size_;
 };
 
 } // namespace stx
