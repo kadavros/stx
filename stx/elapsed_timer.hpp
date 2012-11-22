@@ -6,7 +6,23 @@
 #if defined(STX_PLATFORM_POSIX)
 #include <time.h>
 #elif defined(STX_PLATFORM_WINDOWS)
+
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN_DEFINED_LOCALLY
+#endif
+#ifndef NOMINMAX
+#define NOMINMAX
+#define NOMINMAX_DEFINED_LOCALLY
+#endif
 #include <windows.h>
+#ifdef NOMINMAX_DEFINED_LOCALLY
+#undef NOMINMAX
+#endif
+#ifdef WIN32_LEAN_AND_MEAN_DEFINED_LOCALLY
+#undef WIN32_LEAN_AND_MEAN
+#endif
+
 #endif
 
 //  TODO

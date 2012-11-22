@@ -6,7 +6,21 @@
 #include <time.h>
 
 #if defined(STX_PLATFORM_WINDOWS)
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN_DEFINED_LOCALLY
+#endif
+#ifndef NOMINMAX
+#define NOMINMAX
+#define NOMINMAX_DEFINED_LOCALLY
+#endif
 #include <windows.h>
+#ifdef NOMINMAX_DEFINED_LOCALLY
+#undef NOMINMAX
+#endif
+#ifdef WIN32_LEAN_AND_MEAN_DEFINED_LOCALLY
+#undef WIN32_LEAN_AND_MEAN
+#endif
 /*
     According to MSDN:
         Both the 32-bit and 64-bit versions of gmtime, mktime, mkgmtime, and localtime all use a single tm structure
