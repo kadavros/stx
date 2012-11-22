@@ -42,6 +42,11 @@ public:
         return size() + 1;
     }
     
+    size_type max_size() const
+    {
+        return size();
+    }
+    
     void clear()
     {
         buf_ = empty_c_str();
@@ -204,8 +209,7 @@ public:
     //  end()
     //  rbegin()
     //  rend()
-    //  max_size() (is it useful for const string?)
-    //  assign() (duplicate constructors)
+    //  assign() (duplicates constructors)
     //  copy()
     //  find()
     //  rfind()
