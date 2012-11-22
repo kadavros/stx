@@ -110,7 +110,9 @@ public:
     cstr(const T& t):
         buf_(t), size_(0)
     {
-        assert(t != NULL);
+        if (t == NULL) {
+            buf_ = empty_c_str();
+        }
     }
     
     //  For "const char []" parametes.
@@ -157,10 +159,9 @@ public:
     cstr(const char_type* s, size_type size):
         buf_(s), size_(size)
     {
-        if (!size) {
+        if (!s || !size) {
             clear();
         } else {
-            assert(s != NULL);
             assert(s[size] == '\0');
             buf_ = s;
             size_ = size;
@@ -170,19 +171,24 @@ public:
     //  Precondition: *(last-1) == '\0'
     cstr(const char_type* first, const char_type* last)
     {
-        assert(first != NULL);
-        assert(last != NULL);
-        assert(first < last);
-        assert(*(last-1) == '\0');
-        buf_ = first;
-        size_ = last - first - 1;
+        if (!first) {
+            clear();
+        } else if (!last) {
+            buf_ = first;
+            size_ = 0;
+        } else {
+            assert(first < last);
+            assert(*(last-1) == '\0');
+            buf_ = first;
+            size_ = last - first - 1;
+        }
     }
     
     //  Precondition: v[size] == '\0'
     template <class Allocator>
     cstr(const std::vector<char_type, Allocator>& v, size_type size)
     {
-        if (!size) {
+        if (!size || v.empty()) {
             clear();
         } else {
             assert(v.size() >= size);
