@@ -43,28 +43,23 @@ public:
     
     void reset(T* p = 0)
     {
-        // p != 0; p != px;
+        // p != 0; p != p_;
         this_type(p).swap(*this);
     }
 
     T& operator*() const
     {
-        // px != 0
+        // p_ != 0
         return *p_;
     }
 
     T* operator->() const
     {
-        // px != 0
+        // p_ != 0
         return p_;
     }
 
-    T* get()
-    {
-        return p_;
-    }
-    
-    const T* get() const
+    T* get() const
     {
         return p_;
     }
@@ -79,7 +74,7 @@ public:
         return p_ == 0;
     }
 
-    void swap(scoped_ptr&  b)
+    void swap(scoped_ptr& b)
     {
         T* tmp = b.p_;
         b.p_ = p_;

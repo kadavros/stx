@@ -18,7 +18,7 @@ inline T* get_pointer(T& t)
 }
 
 template<class T>
-inline T* get_pointer(std::auto_ptr<T> const& p)
+inline T* get_pointer(const std::auto_ptr<T>& p)
 {
     return p.get();
 }
