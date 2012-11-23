@@ -35,6 +35,11 @@ public:
     template <class U, class Deleter>
     raw_ptr(const scoped_ptr<U, Deleter>& x): p_(x.get()) {}
     
+    operator T*() const
+    {
+        return p_;
+    }
+    
     void reset(T* p = 0)
     {
         p_ = p;
