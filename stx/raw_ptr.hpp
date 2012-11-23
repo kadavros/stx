@@ -1,7 +1,6 @@
 #ifndef STX_RAW_PTR_HPP
 #define STX_RAW_PTR_HPP
 
-#include <stddef.h>
 #include <memory> // auto_ptr
 #include <stx/scoped_ptr.hpp>
 
@@ -15,7 +14,7 @@ public:
     typedef T element_type;
     typedef raw_ptr<T> this_type;
     
-    raw_ptr(): p_(NULL) {}
+    raw_ptr(): p_(0) {}
     
     template <class U>
     raw_ptr(U* x): p_(x) {}
