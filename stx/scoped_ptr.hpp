@@ -6,14 +6,15 @@
 namespace stx {
 
 template <typename T, typename Deleter = default_delete<T> >
-class scoped_ptr
+class scoped_ptr: protected Deleter
 {
 private:
     
     T* p_;
-    Deleter deleter_;
     
+    typedef T value_type;
     typedef scoped_ptr<T, Deleter> this_type;
+    typedef Deleter deleter_type;
     scoped_ptr(scoped_ptr const&);
     scoped_ptr& operator=(scoped_ptr const&);
     void operator==(scoped_ptr const&) const;
@@ -23,18 +24,20 @@ public:
     
     typedef T element_type;
     
-    explicit scoped_ptr(T* p = 0): p_(p), deleter_(Deleter())
+    explicit scoped_ptr(T* p = 0):
+        p_(p)
     {
     }
     
-    explicit scoped_ptr(T* p, Deleter d): p_(p), deleter_(d)
+    explicit scoped_ptr(T* p, deleter_type d):
+        deleter_type(d), p_(p)
     {
     }
     
     ~scoped_ptr()
     {
         if (p_) {
-            deleter_(p_);
+            deleter_type::operator()(p_);
         }
     }
     
