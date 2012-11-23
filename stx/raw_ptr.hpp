@@ -1,6 +1,32 @@
 #ifndef STX_RAW_PTR_HPP
 #define STX_RAW_PTR_HPP
 
+/*
+    raw_ptr implements a simple wrapper on top of pointers, references and some
+    smart pointers without any overhead. It's primary purpose is to hide
+    different conversions from those types to a raw pointer.
+    
+    Consider following example.
+    
+    Suppose we have some class Data and we write library function Process()
+    which takes handle to Data as it's parameter and does some work.
+    If we declare Process() as follows:
+    
+    void Process(raw_ptr<Data> d);
+    
+    we unify call to Process() for all possible standard Data handles:
+    
+    Data d;
+    Data* pd = &d;
+    Data& rd = d;
+    std::auto_ptr<Data> ap(new Data);
+    
+    Process(d);  // Ok, raw_ptr is initialized as &d.
+    Process(pd); // Ok, raw_ptr is initialized as pd.
+    Process(rd); // Ok, raw_ptr is initialized as &rd.
+    Process(ap); // Ok, raw_ptr is initialized as ap->get().
+*/
+
 #include <memory> // auto_ptr
 #include <stx/scoped_ptr.hpp>
 
