@@ -207,7 +207,7 @@ public:
         }
     }
     
-    //  Raw size.
+    //  Raw size/length/capacity/max_size.
     //  When cstr object is constructed from const char* C-string,
     //  evaluation of actual string size is performed (once) only when size()
     //  member function is called. This lazy size evaluation implies
@@ -220,6 +220,21 @@ public:
     size_type raw_size() const
     {
         return size_;
+    }
+    
+    size_type raw_length() const
+    {
+        return raw_size();
+    }
+    
+    size_type raw_capacity() const
+    {
+        return raw_size() + 1;
+    }
+    
+    size_type raw_max_size() const
+    {
+        return raw_size();
     }
     
     bool size_initialized() const
