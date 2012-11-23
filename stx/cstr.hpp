@@ -10,6 +10,10 @@
 #include <stddef.h>
 #include <assert.h>
 
+#ifndef STX_SIZE_T_MAX
+#   define STX_SIZE_T_MAX (~((size_t) 0))
+#endif
+
 namespace stx {
 
 class cstr
@@ -26,7 +30,7 @@ public:
     
     size_type size() const
     {
-        if (buf_ == empty_c_str() && !size_) {
+        if (!size_initialized()) {
             size_ = strlen(buf_);
         }
         return size_;
@@ -113,7 +117,7 @@ public:
     //  For "const char*" and "const char* const" parameters.
     template <class T>
     cstr(const T& t):
-        buf_(t), size_(0)
+        buf_(t), size_(STX_SIZE_T_MAX)
     {
         if (t == NULL) {
             buf_ = empty_c_str();
@@ -145,14 +149,14 @@ public:
         }
     }
     
-    //  Precondition: v[size()-1] == '\0'
+    //  Precondition: v[size() - 1] == '\0'
     template <class Allocator>
     cstr(const std::vector<char_type, Allocator>& v)
     {
         if (v.empty()) {
             clear();
         } else {
-            assert(v[size()-1] == '\0');
+            assert(v[v.size() - 1] == '\0');
             buf_ = &v[0];
             size_ = v.size() - 1;
         }
@@ -173,17 +177,17 @@ public:
         }
     }
     
-    //  Precondition: *(last-1) == '\0'
+    //  Precondition: *(last - 1) == '\0'
     cstr(const char_type* first, const char_type* last)
     {
         if (!first) {
             clear();
         } else if (!last) {
             buf_ = first;
-            size_ = 0;
+            size_ = STX_SIZE_T_MAX;
         } else {
             assert(first < last);
-            assert(*(last-1) == '\0');
+            assert(*(last - 1) == '\0');
             buf_ = first;
             size_ = last - first - 1;
         }
@@ -201,6 +205,26 @@ public:
             buf_ = &v[0];
             size_ = size;
         }
+    }
+    
+    //  Raw size.
+    //  When cstr object is constructed from const char* C-string,
+    //  evaluation of actual string size is performed (once) only when size()
+    //  member function is called. This lazy size evaluation implies
+    //  some overhead for getting cstr's size, therefore we provide
+    //  raw_size() function. It's safe to call raw_size() after first
+    //  call to size(). Call to raw_size() will generally be faster than
+    //  call to size(), though it won't ensure proper size evaluation.
+    //  You can check whether internal size value is initialized by
+    //  call to size_initialized() function.
+    size_type raw_size() const
+    {
+        return size_;
+    }
+    
+    bool size_initialized() const
+    {
+        return raw_size() != STX_SIZE_T_MAX;
     }
     
     //  TODO
