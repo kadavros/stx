@@ -38,6 +38,7 @@
 //  to be not absolutely portable across different implementations
 //  at least for some types.
 #define STX_BITS_IN_BYTE CHAR_BIT
+#define STX_BITS_IN_CHAR CHAR_BIT
 #define STX_CHAR_MIN     CHAR_MIN
 #define STX_CHAR_MAX     CHAR_MAX
 #define STX_SCHAR_MIN    SCHAR_MIN
@@ -74,5 +75,6 @@
 #define STX_MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define STX_MIN(x, y) (((x) < (y)) ? (x) : (y))
 #define STX_EQUAL(x, y) ((x) == (y))
+#define STX_NOT_EQUAL(x, y) ((x) != (y))
 
 #endif /* STX_CONFIG_HPP */
