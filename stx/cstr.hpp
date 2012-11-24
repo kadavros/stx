@@ -21,7 +21,7 @@ class cstr
 {
 public:
     
-    typedef const char       char_type;
+    typedef char             char_type;
     typedef const char       value_type;
     typedef size_t           size_type;
     typedef ptrdiff_t        difference_type;
