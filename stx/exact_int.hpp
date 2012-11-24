@@ -22,8 +22,7 @@
 #define STX_EXACT_UINT8_MAX   0xff
 #define STX_EXACT_UINT16_MAX  0xffff
 #define STX_EXACT_UINT32_MAX  0xffffffff
-#define STX_EXACT_UINT64_MAX  0xffffffffffffffffULL
-// TODO: ULL suffix might be unportable
+#define STX_EXACT_UINT64_MAX  0xffffffffffffffff
 
 namespace stx {
 
