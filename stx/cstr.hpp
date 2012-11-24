@@ -1,11 +1,12 @@
 #ifndef STX_CSTR_HPP
 #define STX_CSTR_HPP
 
-//  cstr - lightweight C-string wrapper.
+//  cstr - lightweight null-terminated C-string wrapper.
 
 #include <string>
 #include <vector>
 #include <stdexcept>
+#include <iterator>
 #include <string.h>
 #include <stddef.h>
 #include <assert.h>
@@ -242,13 +243,81 @@ public:
         return raw_size() != STX_SIZE_T_MAX;
     }
     
+    typedef const char       value_type;
+    typedef size_t           size_type;
+    typedef ptrdiff_t        difference_type;
+    typedef const char&      reference;
+    typedef const char&      const_reference;
+    typedef const char_type* pointer; // Both pointer and const_pointer are of type const char_type*
+    typedef const char_type* const_pointer;
+    typedef pointer          iterator;
+    typedef const_pointer    const_iterator;
+    typedef std::reverse_iterator<iterator>       reverse_iterator;
+    typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+    
+    iterator begin()
+    {
+        return iterator(buf_);
+    }
+    
+    const_iterator begin() const
+    {
+        return const_iterator(buf_);
+    }
+    
+    iterator end()
+    {
+        return iterator(buf_ + size());
+    }
+    
+    const_iterator end() const
+    {
+        return const_iterator(buf_ + size());
+    }
+    
+    reverse_iterator rbegin()
+    {
+        return reverse_iterator(end());
+    }
+    
+    const_reverse_iterator rbegin() const
+    {
+        return const_reverse_iterator(end());
+    }
+    
+    reverse_iterator rend()
+    {
+        return reverse_iterator(begin());
+    }
+    
+    const_reverse_iterator rend() const
+    {
+        return const_reverse_iterator(begin());
+    }
+    
+    const_iterator cbegin() const
+    {
+        return begin();
+    }
+    
+    const_iterator cend() const
+    {
+        return end();
+    }
+        
+    const_reverse_iterator crbegin() const
+    {
+        return rbegin();
+    }
+    
+    const_reverse_iterator crend() const
+    {
+        return rend();
+    }
+    
     //  TODO
     //  -= C++03 =-
-    //  begin()
-    //  end()
-    //  rbegin()
-    //  rend()
-    //  assign() (duplicates constructors)
+    //  assign()
     //  copy()
     //  find()
     //  rfind()
@@ -258,12 +327,6 @@ public:
     //  find_last_not_of()
     //  substr()
     //  compare()
-    //
-    //  -= C++11 =-
-    //  cbegin()
-    //  cend()
-    //  crbegin()
-    //  crend()
     
 private:
     
