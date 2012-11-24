@@ -19,10 +19,16 @@
 
 #include <limits.h>
 
+#define STX_EXACT_UINT8_MAX   0xff
+#define STX_EXACT_UINT16_MAX  0xffff
+#define STX_EXACT_UINT32_MAX  0xffffffff
+#define STX_EXACT_UINT64_MAX  0xffffffffffffffffULL
+// TODO: ULL suffix might be unportable
+
 namespace stx {
 
 #define STX_HAS_EXACT_INT8  1
-#if   UCHAR_MAX  == 0xff
+#if   UCHAR_MAX  == STX_EXACT_UINT8_MAX
 typedef signed char         exact_int8_t;
 typedef unsigned char       exact_uint8_t;
 #else
@@ -31,19 +37,19 @@ typedef unsigned char       exact_uint8_t;
 #endif
 
 #define STX_HAS_EXACT_INT16 1
-#if   UCHAR_MAX  == 0xffff
+#if   UCHAR_MAX  == STX_EXACT_UINT16_MAX
 typedef signed char         exact_int16_t;
 typedef unsigned char       exact_uint16_t;
-#elif USHRT_MAX  == 0xffff
+#elif USHRT_MAX  == STX_EXACT_UINT16_MAX
 typedef short               exact_int16_t;
 typedef unsigned short      exact_uint16_t;
-#elif UINT_MAX   == 0xffff
+#elif UINT_MAX   == STX_EXACT_UINT16_MAX
 typedef int                 exact_int16_t;
 typedef unsigned int        exact_uint16_t;
-#elif ULONG_MAX  == 0xffff
+#elif ULONG_MAX  == STX_EXACT_UINT16_MAX
 typedef long                exact_int16_t;
 typedef unsigned long       exact_uint16_t;
-#elif defined(ULLONG_MAX) && ULLONG_MAX == 0xffff
+#elif defined(ULLONG_MAX) && ULLONG_MAX == STX_EXACT_UINT16_MAX
 typedef long long           exact_int16_t;
 typedef unsigned long long  exact_uint16_t;
 #else
@@ -52,19 +58,19 @@ typedef unsigned long long  exact_uint16_t;
 #endif
 
 #define STX_HAS_EXACT_INT32 1
-#if   UCHAR_MAX  == 0xffffffff
+#if   UCHAR_MAX  == STX_EXACT_UINT32_MAX
 typedef signed char         exact_int32_t;
 typedef unsigned char       exact_uint32_t;
-#elif USHRT_MAX  == 0xffffffff
+#elif USHRT_MAX  == STX_EXACT_UINT32_MAX
 typedef short               exact_int32_t;
 typedef unsigned short      exact_uint32_t;
-#elif UINT_MAX   == 0xffffffff
+#elif UINT_MAX   == STX_EXACT_UINT32_MAX
 typedef int                 exact_int32_t;
 typedef unsigned int        exact_uint32_t;
-#elif ULONG_MAX  == 0xffffffff
+#elif ULONG_MAX  == STX_EXACT_UINT32_MAX
 typedef long                exact_int32_t;
 typedef unsigned long       exact_uint32_t;
-#elif defined(ULLONG_MAX) && ULLONG_MAX == 0xffffffff
+#elif defined(ULLONG_MAX) && ULLONG_MAX == STX_EXACT_UINT32_MAX
 typedef long long           exact_int32_t;
 typedef unsigned long long  exact_uint32_t;
 #else
@@ -73,19 +79,19 @@ typedef unsigned long long  exact_uint32_t;
 #endif
 
 #define STX_HAS_EXACT_INT64 1
-#if   UCHAR_MAX  == 0xffffffffffffffffULL
+#if   UCHAR_MAX  == STX_EXACT_UINT64_MAX
 typedef signed char         exact_int64_t;
 typedef unsigned char       exact_uint64_t;
-#elif USHRT_MAX  == 0xffffffffffffffffULL
+#elif USHRT_MAX  == STX_EXACT_UINT64_MAX
 typedef short               exact_int64_t;
 typedef unsigned short      exact_uint64_t;
-#elif UINT_MAX   == 0xffffffffffffffffULL
+#elif UINT_MAX   == STX_EXACT_UINT64_MAX
 typedef int                 exact_int64_t;
 typedef unsigned int        exact_uint64_t;
-#elif ULONG_MAX  == 0xffffffffffffffffULL
+#elif ULONG_MAX  == STX_EXACT_UINT64_MAX
 typedef long                exact_int64_t;
 typedef unsigned long       exact_uint64_t;
-#elif ULLONG_MAX && ULLONG_MAX == 0xffffffffffffffffULL
+#elif ULLONG_MAX && ULLONG_MAX == STX_EXACT_UINT64_MAX
 typedef long long           exact_int64_t;
 typedef unsigned long long  exact_uint64_t;
 #else
