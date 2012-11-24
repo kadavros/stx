@@ -21,8 +21,18 @@ class cstr
 {
 public:
     
-    typedef char char_type;
-    typedef size_t size_type;
+    typedef const char       char_type;
+    typedef const char       value_type;
+    typedef size_t           size_type;
+    typedef ptrdiff_t        difference_type;
+    typedef const char&      reference;
+    typedef const char&      const_reference;
+    typedef const char_type* pointer; // Both pointer and const_pointer are of type const char_type*
+    typedef const char_type* const_pointer;
+    typedef pointer          iterator;
+    typedef const_pointer    const_iterator;
+    typedef std::reverse_iterator<iterator>       reverse_iterator;
+    typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
     
     const char_type* c_str() const
     {
@@ -242,18 +252,6 @@ public:
     {
         return raw_size() != STX_SIZE_T_MAX;
     }
-    
-    typedef const char       value_type;
-    typedef size_t           size_type;
-    typedef ptrdiff_t        difference_type;
-    typedef const char&      reference;
-    typedef const char&      const_reference;
-    typedef const char_type* pointer; // Both pointer and const_pointer are of type const char_type*
-    typedef const char_type* const_pointer;
-    typedef pointer          iterator;
-    typedef const_pointer    const_iterator;
-    typedef std::reverse_iterator<iterator>       reverse_iterator;
-    typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
     
     iterator begin()
     {
