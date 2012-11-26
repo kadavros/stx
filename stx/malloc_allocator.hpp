@@ -35,7 +35,7 @@ public:
     {
     }
     
-    template<typename T1>
+    template <typename T1>
     malloc_allocator(const malloc_allocator<T1>&) throw()
     {
     }
