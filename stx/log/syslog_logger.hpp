@@ -93,8 +93,8 @@ public:
         const string_type& delimiter = "",
         int log_level = log_level_all)
     {
-        level_ = log_level;
-        delimiter_ = delimiter;
+        basic_logger_type::level_ = log_level;
+        basic_logger_type::delimiter_ = delimiter;
         openlog(prepending_string.c_str(), options, facility);
     }
     
@@ -105,7 +105,7 @@ public:
     
     basic_syslog_logger& set_level(int new_level)
     {
-        basic_logger::set_level(new_level);
+        basic_logger_type::set_level(new_level);
         setlogmask(level_to_syslog_priority(new_level));
         return *this;
     }
@@ -121,7 +121,7 @@ public:
         message_level_ = message_level;
     }
     
-    void finish_formatting(log_formatter& fmt)
+    void finish_formatting(Formatter& fmt)
     {
         if (fmt.enabled()) {
             stream() << std::endl;
@@ -152,7 +152,5 @@ protected:
 typedef basic_syslog_logger<char> syslog_logger;
 
 } // namespace stx
-
-#endif // STX_PLATFORM_UNIX
 
 #endif // STX_LOG_SYSLOG_LOGGER_HPP

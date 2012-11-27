@@ -31,7 +31,7 @@
 // TODO
 // Is there any trustworthy way to determine presense of syslog api at macro level?
 //#ifdef STX_HAS_SYSLOG
-#include <stx/log/syslog_logger.hpp>
+//#include <stx/log/syslog_logger.hpp>
 //#endif // STX_HAS_SYSLOG
 #endif
 
