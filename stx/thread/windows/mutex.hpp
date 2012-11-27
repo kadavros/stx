@@ -26,7 +26,7 @@ public:
     
     bool try_lock()
     {
-        return TryEnterCriticalSection(&critical_section_);
+        return (TryEnterCriticalSection(&critical_section_) != 0);
     }
     
     void unlock()

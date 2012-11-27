@@ -96,7 +96,7 @@ public:
         
         std::ios_base::fmtflags prev_flags(os.flags());
         os.flags(ios_type::dec | ios_type::fixed);
-        char prev_fill_char = os.fill();
+        char_type prev_fill_char = os.fill();
         os.fill('0');
         if (subsecond_precision > 9) {
             subsecond_precision = 9;

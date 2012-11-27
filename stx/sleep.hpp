@@ -80,13 +80,15 @@ inline void sleep(time_t seconds, long nanoseconds)
 
 inline void sleep(double seconds)
 {
-    DWORD dwMilliseconds = seconds * 1000.0;
+	//	TODO: add check for max DWORD size
+    DWORD dwMilliseconds = static_cast<DWORD>(seconds * 1000.0);
     Sleep(dwMilliseconds);
 }
 
 inline void sleep(time_t seconds, long nanoseconds)
 {
-    DWORD dwMilliseconds = seconds * 1000 + nanoseconds / 1000000;
+	//	TODO: add check for max DWORD size
+    DWORD dwMilliseconds = static_cast<DWORD>(seconds * 1000 + nanoseconds / 1000000);
     Sleep(dwMilliseconds);
 }
 

@@ -71,6 +71,7 @@ inline bool index_sort_impl(
     
     ForwardIterator i;
     size_t n, x, k;
+	//TmpArrayType n, x, k;
     
     if (special_case) {
         i = first;
@@ -85,7 +86,7 @@ inline bool index_sort_impl(
     std::vector<TmpArrayType> tmp_array;
     try {
         tmp_array.resize(tmp_array_size, 0);
-    } catch (std::bad_alloc& e) {
+    } catch (std::bad_alloc&) {
         return false;
     }
     
