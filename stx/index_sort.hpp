@@ -70,8 +70,8 @@ inline bool index_sort_impl(
     }
     
     ForwardIterator i;
-    size_t n, x, k;
-	//TmpArrayType n, x, k;
+	size_t n;
+	TmpArrayType x, k;
     
     if (special_case) {
         i = first;

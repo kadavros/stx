@@ -12,7 +12,7 @@ public:
     
     // normal new/delete
     
-    static void* operator new(size_t size) throw(std::bad_alloc)
+    static void* operator new(size_t size) //throw(std::bad_alloc)
     {
         return ::operator new(size);
     }
