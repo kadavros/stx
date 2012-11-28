@@ -64,7 +64,7 @@ public:
         delimiter_ = log.delimiter_;
     }
     
-    Formatter log(int message_level)
+    Formatter log_message(int message_level)
     {
         if (enabled(message_level)) {
             start_formatting(message_level);
@@ -74,32 +74,32 @@ public:
     
     Formatter trace()
     {
-        return log(log_level_trace);
+        return log_message(log_level_trace);
     }
     
     Formatter debug()
     {
-        return log(log_level_debug);
+        return log_message(log_level_debug);
     }
     
     Formatter info()
     {
-        return log(log_level_info);
+        return log_message(log_level_info);
     }
     
     Formatter warn()
     {
-        return log(log_level_warn);
+        return log_message(log_level_warn);
     }
     
     Formatter error()
     {
-        return log(log_level_error);
+        return log_message(log_level_error);
     }
     
     Formatter fatal()
     {
-        return log(log_level_fatal);
+        return log_message(log_level_fatal);
     }
     
     int level() const

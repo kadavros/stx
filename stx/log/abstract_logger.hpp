@@ -23,7 +23,7 @@ public:
     typedef std::basic_string<CharType, CharTraits, Allocator> string_type;
     typedef std::basic_ostream<CharType, CharTraits> ostream_type;
     
-    virtual Formatter log(int message_level) = 0;
+    virtual Formatter log_message(int message_level) = 0;
     
     virtual Formatter trace() = 0;
     

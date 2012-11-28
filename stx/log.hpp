@@ -1,7 +1,7 @@
 #ifndef STX_LOG_HPP
 #define STX_LOG_HPP
 
-#define STX_LOG(level) if (get_logger().disabled(level)); else get_logger().log(level)
+#define STX_LOG(level) if (get_logger().disabled(level)); else get_logger().log_message(level)
 #define STX_LOG_TRACE  STX_LOG(stx::log_level_trace)
 #define STX_LOG_DEBUG  STX_LOG(stx::log_level_debug)
 #define STX_LOG_INFO   STX_LOG(stx::log_level_info)
@@ -11,13 +11,13 @@
 
 //  Warning: some of those short macros conflict with syslog macros.
 #ifdef STX_NO_MACRO_PREFIX
-#   define LOG         STX_LOG
-#   define LOG_TRACE   STX_LOG_TRACE
-#   define LOG_DEBUG   STX_LOG_DEBUG
-#   define LOG_INFO    STX_LOG_INFO
-#   define LOG_WARN    STX_LOG_WARN
-#   define LOG_ERROR   STX_LOG_ERROR
-#   define LOG_FATAL   STX_LOG_FATAL
+#   define log_msg     STX_LOG
+#   define log_trace   STX_LOG_TRACE
+#   define log_debug   STX_LOG_DEBUG
+#   define log_info    STX_LOG_INFO
+#   define log_warn    STX_LOG_WARN
+#   define log_error   STX_LOG_ERROR
+#   define log_fatal   STX_LOG_FATAL
 #endif
 
 #include <stx/log/abstract_logger.hpp>
@@ -31,7 +31,7 @@
 // TODO
 // Is there any trustworthy way to determine presense of syslog api at macro level?
 //#ifdef STX_HAS_SYSLOG
-//#include <stx/log/syslog_logger.hpp>
+#include <stx/log/syslog_logger.hpp>
 //#endif // STX_HAS_SYSLOG
 #endif
 

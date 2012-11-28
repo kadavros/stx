@@ -12,29 +12,29 @@ namespace detail {
 template <class T> T& cout_logger();
 template <> ostream_logger& cout_logger<ostream_logger>()
 {
-    static ostream_logger log(std::cout);
-    return log;
+    static ostream_logger logger(std::cout);
+    return logger;
 }
 
 template <class T> T& wcout_logger();
 template <> wostream_logger& wcout_logger<wostream_logger>()
 {
-    static wostream_logger log(std::wcout);
-    return log;
+    static wostream_logger logger(std::wcout);
+    return logger;
 }
 
 template <class T> T& clog_logger();
 template <> ostream_logger& clog_logger<ostream_logger>()
 {
-    static ostream_logger log(std::clog);
-    return log;
+    static ostream_logger logger(std::clog);
+    return logger;
 }
 
 template <class T> T& wclog_logger();
 template <> wostream_logger& wclog_logger<wostream_logger>()
 {
-    static wostream_logger log(std::wclog);
-    return log;
+    static wostream_logger logger(std::wclog);
+    return logger;
 }
 
 template <class T> int global_logger_nifty_counter(int x = 0);
