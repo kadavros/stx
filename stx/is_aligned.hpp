@@ -14,14 +14,12 @@
 
 namespace stx {
 
-template <class T>
-inline bool is_aligned(const T* p, size_t alignment)
+inline bool is_aligned(const void* p, size_t alignment)
 {
     STX_ASSERT_ALIGNMENT(alignment);
     return STX_IS_ALIGNED(p, alignment);
 }
 
-//template <class T>
 inline bool is_aligned(void (*p)(), size_t alignment)
 {
     STX_ASSERT_ALIGNMENT(alignment);
@@ -29,7 +27,7 @@ inline bool is_aligned(void (*p)(), size_t alignment)
 }
 
 template <class T, class U>
-inline bool is_aligned(const U T::*p, size_t alignment)
+inline bool is_aligned(U T::*p, size_t alignment)
 {
     STX_ASSERT_ALIGNMENT(alignment);
     return STX_IS_ALIGNED(p, alignment);
