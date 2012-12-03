@@ -17,12 +17,7 @@
 #endif
 
 #include <limits.h>
-
-#ifdef LLONG_MAX
-#   define STX_HAS_LONG_LONG 1
-#else
-#   define STX_HAS_LONG_LONG 0
-#endif
+#include <stx/int_types/long_long.hpp>
 
 #if CHAR_MAX < UCHAR_MAX
 #define STX_CHAR_IS_SIGNED   1
@@ -57,12 +52,6 @@
 #define STX_LONG_MAX     LONG_MAX
 #define STX_ULONG_MIN    ((unsigned long) 0)
 #define STX_ULONG_MAX    ULONG_MAX
-#if STX_HAS_LONG_LONG
-#define STX_LLONG_MIN    LLONG_MIN
-#define STX_LLONG_MAX    LLONG_MAX
-#define STX_ULLONG_MIN   ((unsigned long long) 0)
-#define STX_ULLONG_MAX   ULLONG_MAX
-#endif
 
 #include <float.h>
 

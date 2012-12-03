@@ -22,10 +22,11 @@
 */
 
 #include <stddef.h> // size_t
-#include <limits.h> // UCHAR_MAX, USHRT_MAX, UINT_MAX, ULONG_MAX, ULLONG_MAX
+#include <limits.h> // UCHAR_MAX, USHRT_MAX, UINT_MAX, ULONG_MAX
 #include <iterator> // advance(), distance(), iterator_traits
 #include <vector>   // vector
 #include <new>      // bad_alloc
+#include <stx/int_types/long_long.hpp>
 
 #ifndef SIZE_T_MAX
 #   define SIZE_T_MAX (~((size_t) 0))
@@ -141,8 +142,8 @@ inline bool index_sort(
     } else if (size <= ULONG_MAX) {
         ret = index_sort_impl<ForwardIterator, Integer, unsigned long>(first, size, min_value, max_value);
     }
-#   ifdef ULLONG_MAX
-    else if (size <= ULLONG_MAX) {
+#   if STX_HAS_LONG_LONG
+    else {
         ret = index_sort_impl<ForwardIterator, Integer, unsigned long long>(first, size, min_value, max_value);
     }
 #   endif

@@ -5,6 +5,7 @@
 
 #include <stddef.h>
 #include <limits.h>
+#include <stx/int_types/long_long.hpp>
 
 namespace stx {
 
@@ -45,8 +46,8 @@ struct intptr_t_impl<sizeof(long)>
 };
 #endif
 
-#ifdef ULLONG_MAX
-#if ULLONG_MAX != ULONG_MAX
+#if STX_HAS_LONG_LONG
+#if STX_ULLONG_MAX != ULONG_MAX
 template <>
 struct intptr_t_impl<sizeof(long long)>
 {

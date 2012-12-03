@@ -1,7 +1,7 @@
 #ifndef STX_MAX_ALIGNMENT_HPP
 #define STX_MAX_ALIGNMENT_HPP
 
-#include <limits.h>
+#include <stx/int_types/long_long.hpp>
 
 namespace stx {
 
@@ -20,7 +20,7 @@ union max_alignment_t
     short       short_;
     int         int_;
     long        long_;
-#   ifdef LLONG_MAX
+#   if STX_HAS_LONG_LONG
     long long   long_long_;
 #   endif
     float       float_;
@@ -35,7 +35,7 @@ union max_alignment_t
     max_alignment_struct_with_type<short>       struct_with_short_;
     max_alignment_struct_with_type<int>         struct_with_int_;
     max_alignment_struct_with_type<long>        struct_with_long_;
-#   ifdef LLONG_MAX
+#   if STX_HAS_LONG_LONG
     max_alignment_struct_with_type<long long>   struct_with_long_long_;
 #   endif
     max_alignment_struct_with_type<float>       struct_with_float_;
