@@ -4,6 +4,7 @@
 #include <stx/int_types/long_long.hpp>
 #include <stx/int_types/exact_int.hpp>
 #include <stx/int_types/intptr.hpp>
+#include <stx/int_types/has_padding.hpp>
 
 //  todo: padding of integer types
 //  todo: least_int
