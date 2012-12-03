@@ -1,6 +1,7 @@
 #ifndef STX_LOG_LOG_FORMATTER_HPP
 #define STX_LOG_LOG_FORMATTER_HPP
 
+#include <stx/int_types/long_long.hpp>
 #include <stx/log/abstract_logger.hpp>
 #include <ios>
 #include <iomanip>
@@ -66,6 +67,56 @@ public:
         write_to_stream(x);
         return *this;
     }
+    
+    log_formatter& operator <<(unsigned short x)
+    {
+        write_to_stream(x);
+        return *this;
+    }
+    
+    log_formatter& operator <<(short x)
+    {
+        write_to_stream(x);
+        return *this;
+    }
+    
+    log_formatter& operator <<(unsigned int x)
+    {
+        write_to_stream(x);
+        return *this;
+    }
+    
+    log_formatter& operator <<(int x)
+    {
+        write_to_stream(x);
+        return *this;
+    }
+    
+    log_formatter& operator <<(unsigned long x)
+    {
+        write_to_stream(x);
+        return *this;
+    }
+    
+    log_formatter& operator <<(long x)
+    {
+        write_to_stream(x);
+        return *this;
+    }
+    
+#if STX_HAS_LONG_LONG
+    log_formatter& operator <<(unsigned long long x)
+    {
+        write_to_stream(x);
+        return *this;
+    }
+    
+    log_formatter& operator <<(long long x)
+    {
+        write_to_stream(x);
+        return *this;
+    }
+#endif
     
     log_formatter& operator <<(const string_type& x)
     {

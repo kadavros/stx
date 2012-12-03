@@ -1,62 +1,78 @@
 #ifndef STX_INT_TYPES_HAS_PADDING_HPP
 #define STX_INT_TYPES_HAS_PADDING_HPP
 
-#include <limits>
 #include <limits.h>
 #include <stx/int_types/long_long.hpp>
+#include <stx/int_types/int_limits.hpp>
 
 namespace stx {
 
-template <class IntegerType>
-inline bool has_padding();
-
-template <class UnsignedIntegerType>
-inline bool has_padding_impl()
+template <uintmax_t X>
+struct has_padding_impl_t
 {
-    UnsignedIntegerType x = std::numeric_limits<UnsignedIntegerType>::max();
-    size_t num_bits = 0;
-    for (; x != 0; x >>= 1) {
-        ++num_bits;
-    }
-    return num_bits != CHAR_BIT * sizeof(UnsignedIntegerType);
-}
+    enum { value = (X == 0 ? 0 : 1) + has_padding_impl_t<(X >> 1)>::value };
+};
 
 template <>
-inline bool has_padding<char>()
+struct has_padding_impl_t<0>
 {
-    return false;
-}
+    enum { value = 0 };
+};
+
+template <class T>
+struct has_padding_t;
 
 template <>
-inline bool has_padding<signed char>()
+struct has_padding_t<char>
 {
-    return false;
-}
+    typedef char value_type;
+    enum { value = 0 };
+};
 
 template <>
-inline bool has_padding<unsigned char>()
+struct has_padding_t<signed char>
 {
-    return false;
-}
+    typedef signed char value_type;
+    enum { value = 0 };
+};
 
 template <>
-inline bool has_padding<unsigned short>()
+struct has_padding_t<unsigned char>
 {
-    return has_padding_impl<unsigned short>();
-}
+    typedef unsigned char value_type;
+    enum { value = 0 };
+};
 
 template <>
-inline bool has_padding<unsigned int>()
+struct has_padding_t<unsigned short>
 {
-    return has_padding_impl<unsigned int>();
-}
+    typedef unsigned short value_type;
+    enum { value = (sizeof(value_type)*CHAR_BIT != has_padding_impl_t<int_limits<value_type>::max >::value) };
+};
+
+template <>
+struct has_padding_t<unsigned int>
+{
+    typedef unsigned int value_type;
+    enum { value = (sizeof(value_type)*CHAR_BIT != has_padding_impl_t<int_limits<value_type>::max >::value) };
+};
+
+template <>
+struct has_padding_t<unsigned long>
+{
+    typedef unsigned long value_type;
+    enum { value = (sizeof(value_type)*CHAR_BIT != has_padding_impl_t<int_limits<value_type>::max >::value) };
+};
 
 #if STX_HAS_LONG_LONG
+
 template <>
-inline bool has_padding<unsigned long long>()
+struct has_padding_t<unsigned long long>
 {
-    return has_padding_impl<unsigned long long>();
-}
+    typedef unsigned long long value_type;
+    enum { value = (sizeof(value_type)*CHAR_BIT != has_padding_impl_t<int_limits<value_type>::max >::value) };
+};
+
 #endif
 
 } // namespace stx
