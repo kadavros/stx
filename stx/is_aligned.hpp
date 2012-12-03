@@ -3,7 +3,7 @@
 
 #include <assert.h>
 #include <stddef.h>
-#include <stx/intptr.hpp>
+#include <stx/int_types/intptr.hpp>
 
 //  Check if alignment is a power of 2.
 #define STX_ASSERT_ALIGNMENT(alignment) \

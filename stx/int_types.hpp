@@ -2,6 +2,7 @@
 #define STX_INT_TYPES_HPP
 
 #include <stx/int_types/exact_int.hpp>
+#include <stx/int_types/intptr.hpp>
 
 //  todo: padding of integer types
 //  todo: least_int

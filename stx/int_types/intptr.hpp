@@ -1,5 +1,5 @@
-#ifndef STX_INTPTR_HPP
-#define STX_INTPTR_HPP
+#ifndef STX_INT_TYPES_INTPTR_HPP
+#define STX_INT_TYPES_INTPTR_HPP
 
 //  Typedefs for intptr_t & uintptr_t.
 
@@ -61,4 +61,4 @@ typedef intptr_t_impl<sizeof(void*)>::unsigned_type uintptr_t;
 
 } // namespace stx
 
-#endif // STX_INTPTR_HPP
+#endif // STX_INT_TYPES_INTPTR_HPP
