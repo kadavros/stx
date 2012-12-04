@@ -77,9 +77,10 @@ public:
         int options = LOG_ODELAY,
         int facility = LOG_USER,
         const string_type& delimiter = "",
-        int log_level = log_level_all)
+        int log_level = log_level_all):
+            prepending_string_(prepending_string)
     {
-        create(prepending_string, options, facility, delimiter, log_level);
+        create(prepending_string_, options, facility, delimiter, log_level);
     }
     
     void create(
@@ -91,8 +92,11 @@ public:
     {
         basic_logger_type::level_ = log_level;
         basic_logger_type::delimiter_ = delimiter;
-        prepending_string_ = prepending_string;
-        openlog(prepending_string_.c_str(), options, facility);
+        if (prepending_string.empty()) {
+            openlog(NULL, options, facility);
+        } else {
+            openlog(prepending_string.c_str(), options, facility);
+        }
     }
     
     virtual ~basic_syslog_logger()
@@ -142,8 +146,8 @@ protected:
     }
     
     ostringstream_type ss_;
-    string_type prepending_string_;
     int message_level_;
+    const string_type prepending_string_;
 };
 
 typedef basic_syslog_logger<char> syslog_logger;
