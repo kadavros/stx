@@ -44,10 +44,6 @@ public:
     typedef basic_logger<CharType, Mutex, CharTraits, Allocator, Formatter> basic_logger_type;
     typedef std::basic_ostringstream<CharType, CharTraits, Allocator> ostringstream_type;
     
-    basic_syslog_logger(int log_level = log_level_all): basic_logger_type(log_level)
-    {
-    }
-    
     //  options:
     //      LOG_PID: Log the process ID with each message. This is useful for
     //          identifying specific processes.
@@ -103,11 +99,10 @@ public:
         closelog();
     }
     
-    basic_syslog_logger& set_level(int new_level)
+    void set_level(int new_level)
     {
         basic_logger_type::set_level(new_level);
         setlogmask(level_to_syslog_priority(new_level));
-        return *this;
     }
     
     ostream_type& stream()
