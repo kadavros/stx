@@ -9,13 +9,13 @@
 namespace stx {
 
 template <uintmax_t X>
-struct has_padding_impl
+struct effective_bits_num
 {
-    enum { value = (X == 0 ? 0 : 1) + has_padding_impl<(X >> 1)>::value };
+    enum { value = (X == 0 ? 0 : 1) + effective_bits_num<(X >> 1)>::value };
 };
 
 template <>
-struct has_padding_impl<0>
+struct effective_bits_num<0>
 {
     enum { value = 0 };
 };
@@ -48,7 +48,7 @@ template <>
 struct has_padding<unsigned short>
 {
     typedef unsigned short value_type;
-    enum { value = (sizeof(value_type)*CHAR_BIT != has_padding_impl<int_limits<value_type>::max>::value) };
+    enum { value = (sizeof(value_type)*CHAR_BIT != effective_bits_num<int_limits<value_type>::max>::value) };
 };
 
 template <>
@@ -67,7 +67,7 @@ template <>
 struct has_padding<unsigned int>
 {
     typedef unsigned int value_type;
-    enum { value = (sizeof(value_type)*CHAR_BIT != has_padding_impl<int_limits<value_type>::max>::value) };
+    enum { value = (sizeof(value_type)*CHAR_BIT != effective_bits_num<int_limits<value_type>::max>::value) };
 };
 
 template <>
@@ -86,7 +86,7 @@ template <>
 struct has_padding<unsigned long>
 {
     typedef unsigned long value_type;
-    enum { value = (sizeof(value_type)*CHAR_BIT != has_padding_impl<int_limits<value_type>::max>::value) };
+    enum { value = (sizeof(value_type)*CHAR_BIT != effective_bits_num<int_limits<value_type>::max>::value) };
 };
 
 template <>
@@ -107,7 +107,7 @@ template <>
 struct has_padding<unsigned long long>
 {
     typedef unsigned long long value_type;
-    enum { value = (sizeof(value_type)*CHAR_BIT != has_padding_impl<int_limits<value_type>::max>::value) };
+    enum { value = (sizeof(value_type)*CHAR_BIT != effective_bits_num<int_limits<value_type>::max>::value) };
 };
 
 template <>
