@@ -1,6 +1,9 @@
 #ifndef STX_INT_TYPES_INT_LIMITS_HPP
 #define STX_INT_TYPES_INT_LIMITS_HPP
 
+//  Warning! int_limits' min & max values are nonportable for types which
+//  max value is larger than UINT_MAX or min value is smaller than UINT_MIN.
+
 #include <stx/int_types/long_long.hpp>
 #include <cwchar>
 
@@ -132,7 +135,7 @@ struct int_limits<unsigned long>
 #if STX_HAS_LONG_LONG
 
 template <>
-struct int_limits<long long>
+struct int_limits<llong>
 {
     enum {
         is_signed = 1,
@@ -144,7 +147,7 @@ struct int_limits<long long>
 };
 
 template <>
-struct int_limits<unsigned long long>
+struct int_limits<ullong>
 {
     enum {
         is_signed = 0,

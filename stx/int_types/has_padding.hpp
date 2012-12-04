@@ -48,17 +48,18 @@ template <>
 struct has_padding<unsigned short>
 {
     typedef unsigned short value_type;
-    enum { value = (sizeof(value_type)*CHAR_BIT != effective_bits_num<int_limits<value_type>::max>::value) };
+    enum { value = (sizeof(value_type)*CHAR_BIT != effective_bits_num<USHRT_MAX>::value) };
 };
 
 template <>
 struct has_padding<short>
 {
     typedef short value_type;
+    typedef unsigned short unsigned_value_type;
     enum { value =
         (
-            (has_padding<unsigned value_type>::value == 0) &&
-            ((int_limits<unsigned value_type>::max >> 1) == int_limits<value_type>::max)
+            (has_padding<unsigned_value_type>::value == 0) &&
+            ((int_limits<unsigned_value_type>::max >> 1) == SHRT_MAX)
         ) ? 0 : 1
     };
 };
@@ -67,17 +68,18 @@ template <>
 struct has_padding<unsigned int>
 {
     typedef unsigned int value_type;
-    enum { value = (sizeof(value_type)*CHAR_BIT != effective_bits_num<int_limits<value_type>::max>::value) };
+    enum { value = (sizeof(value_type)*CHAR_BIT != effective_bits_num<UINT_MAX>::value) };
 };
 
 template <>
 struct has_padding<int>
 {
     typedef int value_type;
+    typedef unsigned int unsigned_value_type;
     enum { value =
         (
-            (has_padding<unsigned value_type>::value == 0) &&
-            ((int_limits<unsigned value_type>::max >> 1) == int_limits<value_type>::max)
+            (has_padding<unsigned_value_type>::value == 0) &&
+            ((int_limits<unsigned_value_type>::max >> 1) == INT_MAX)
         ) ? 0 : 1
     };
 };
@@ -86,17 +88,18 @@ template <>
 struct has_padding<unsigned long>
 {
     typedef unsigned long value_type;
-    enum { value = (sizeof(value_type)*CHAR_BIT != effective_bits_num<int_limits<value_type>::max>::value) };
+    enum { value = (sizeof(value_type)*CHAR_BIT != effective_bits_num<ULONG_MAX>::value) };
 };
 
 template <>
 struct has_padding<long>
 {
     typedef long value_type;
+    typedef unsigned long unsigned_value_type;
     enum { value =
         (
-            (has_padding<unsigned value_type>::value == 0) &&
-            ((int_limits<unsigned value_type>::max >> 1) == int_limits<value_type>::max)
+            (has_padding<unsigned_value_type>::value == 0) &&
+            ((int_limits<unsigned_value_type>::max >> 1) == LONG_MAX)
         ) ? 0 : 1
     };
 };
@@ -104,20 +107,21 @@ struct has_padding<long>
 #if STX_HAS_LONG_LONG
 
 template <>
-struct has_padding<unsigned long long>
+struct has_padding<ullong>
 {
-    typedef unsigned long long value_type;
-    enum { value = (sizeof(value_type)*CHAR_BIT != effective_bits_num<int_limits<value_type>::max>::value) };
+    typedef ullong value_type;
+    enum { value = (sizeof(value_type)*CHAR_BIT != effective_bits_num<STX_ULLONG_MAX>::value) };
 };
 
 template <>
-struct has_padding<long long>
+struct has_padding<llong>
 {
-    typedef long long value_type;
+    typedef llong value_type;
+    typedef ullong unsigned_value_type;
     enum { value =
         (
-            (has_padding<unsigned value_type>::value == 0) &&
-            ((int_limits<unsigned value_type>::max >> 1) == int_limits<value_type>::max)
+            (has_padding<unsigned_value_type>::value == 0) &&
+            ((int_limits<unsigned_value_type>::max >> 1) == STX_LLONG_MAX)
         ) ? 0 : 1
     };
 };
