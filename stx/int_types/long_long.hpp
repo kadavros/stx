@@ -21,12 +21,14 @@
 #   define STX_ULLONG_MAX ULLONG_MAX
 #endif
 
+namespace stx {
+
 #if STX_HAS_LONG_LONG
-typedef long long          intmax_t;
-typedef unsigned long long uintmax_t;
-#else
-typedef long               intmax_t;
-typedef unsigned long      uintmax_t;
+typedef long long          llong;
+typedef long long          sllong;
+typedef unsigned long long ullong;
 #endif
+
+} // namespace stx
 
 #endif // STX_INT_TYPES_LONG_LONG_HPP

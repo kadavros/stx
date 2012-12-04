@@ -4,6 +4,7 @@
 #include <limits.h>
 #include <stx/int_types/long_long.hpp>
 #include <stx/int_types/int_limits.hpp>
+#include <stx/int_types/intmax.hpp>
 
 namespace stx {
 
@@ -47,7 +48,7 @@ template <>
 struct has_padding<unsigned short>
 {
     typedef unsigned short value_type;
-    enum { value = (sizeof(value_type)*CHAR_BIT != has_padding_impl<int_limits<value_type>::max >::value) };
+    enum { value = (sizeof(value_type)*CHAR_BIT != has_padding_impl<int_limits<value_type>::max>::value) };
 };
 
 template <>
@@ -66,7 +67,7 @@ template <>
 struct has_padding<unsigned int>
 {
     typedef unsigned int value_type;
-    enum { value = (sizeof(value_type)*CHAR_BIT != has_padding_impl<int_limits<value_type>::max >::value) };
+    enum { value = (sizeof(value_type)*CHAR_BIT != has_padding_impl<int_limits<value_type>::max>::value) };
 };
 
 template <>
@@ -85,7 +86,7 @@ template <>
 struct has_padding<unsigned long>
 {
     typedef unsigned long value_type;
-    enum { value = (sizeof(value_type)*CHAR_BIT != has_padding_impl<int_limits<value_type>::max >::value) };
+    enum { value = (sizeof(value_type)*CHAR_BIT != has_padding_impl<int_limits<value_type>::max>::value) };
 };
 
 template <>
@@ -106,7 +107,7 @@ template <>
 struct has_padding<unsigned long long>
 {
     typedef unsigned long long value_type;
-    enum { value = (sizeof(value_type)*CHAR_BIT != has_padding_impl<int_limits<value_type>::max >::value) };
+    enum { value = (sizeof(value_type)*CHAR_BIT != has_padding_impl<int_limits<value_type>::max>::value) };
 };
 
 template <>
