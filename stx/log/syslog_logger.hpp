@@ -107,12 +107,12 @@ public:
     
     ostream_type& stream()
     {
-        ss_.str(""); //todo make portable for wchar_t
         return ss_;
     }
     
     void start_formatting(int message_level)
     {
+        ss_.str(""); //todo make portable for wchar_t
         message_level_ = message_level;
     }
     
