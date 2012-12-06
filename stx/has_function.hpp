@@ -23,14 +23,10 @@
         int x = 12345;
         if (has_snprintf()) {
             std::cout << "snprintf is present" << std::endl;
-        } else {
-            std::cout << "snprintf is absent" << std::endl;
-        }
-        try {
             snprintf_ptr()(buf, 6, "%d", x);
             std::cout << buf << std::endl;
-        } catch (std::exception& e) {
-            std::cout << e.what() << std::endl;
+        } else {
+            std::cout << "snprintf is absent" << std::endl;
         }
         return 0;
     }
@@ -48,21 +44,16 @@
     #endif
 */
 
-#include <stdexcept>
-
 #define STX_DECLARE_HAS_FUNCTION(function_name, return_type, param_types) \
     \
     struct has_##function_name##_t {}; \
     \
-    inline return_type function_name(has_##function_name##_t) \
-    { \
-        throw std::runtime_error("function " #function_name " is absent"); \
-    } \
+    inline void function_name(has_##function_name##_t) {} \
     \
     inline bool has_##function_name() \
     { \
         void (*fp1)() = (void (*)()) \
-            ((return_type (*)(has_##function_name##_t)) function_name); \
+            ((void (*)(has_##function_name##_t)) function_name); \
         void (*fp2)() = (void (*)()) \
             ((return_type (*)param_types) function_name); \
         return (fp1 != fp2); \
