@@ -12,6 +12,7 @@ template<class Func>
 inline DWORD WINAPI thread_routine(LPVOID arg)
 {
     (*((Func*) arg))();
+    delete (Func*) arg;
     return 0;
 }
 
@@ -38,6 +39,7 @@ public:
         handle_ = NULL;
     }
     
+    template<class Func>
     void create(LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter)
     {
         LPSECURITY_ATTRIBUTES lpThreadAttributes = NULL;
@@ -54,6 +56,7 @@ public:
         if (!handle_) {
             //STX_THROW_SYSTEM_ERROR_VAL(GetLastError(), "CreateThread");
             // todo
+            delete (Func*) lpParameter;
             throw std::runtime_error("CreateThread");
         }
     }
@@ -61,9 +64,8 @@ public:
     template<class Func>
     void create(Func func)
     {
-        static Func func_;
-        func_ = func;
-        create((LPTHREAD_START_ROUTINE) thread_routine<Func>, (LPVOID) &func_);
+        Func* pf = new Func(func);
+        create<Func>((LPTHREAD_START_ROUTINE) thread_routine<Func>, (LPVOID) pf);
     }
     
     // todo: implement correctly

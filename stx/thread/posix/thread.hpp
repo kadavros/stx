@@ -12,6 +12,7 @@ template<class Func>
 inline void* thread_routine(void* arg)
 {
     (*((Func*) arg))();
+    delete (Func*) arg;
     return NULL;
 }
 
@@ -53,12 +54,14 @@ public:
     {
     }
     
+    template<class Func>
     void create(void *(*start_routine)(void*), void* arg)
     {
         int ret = pthread_create(&handle_, NULL, start_routine, arg);
         if (ret) {
             //STX_THROW_SYSTEM_ERROR_VAL(ret, "pthread_create");
             // todo
+            delete (Func*) arg;
             throw std::runtime_error("pthread_create");
         }
     }
@@ -66,9 +69,8 @@ public:
     template<class Func>
     void create(Func func)
     {
-        static Func func_;
-        func_ = func;
-        create(thread_routine<Func>, (void*) &func_);
+        Func* pf = new Func(func);
+        create<Func>(thread_routine<Func>, (void*) pf);
     }
     
     void join()
