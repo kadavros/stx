@@ -8,6 +8,7 @@
 #include <stx/int_types/int_limits.hpp>
 #include <stx/int_types/sign_type_conversions.hpp>
 #include <stx/int_types/intmax.hpp>
+#include <stx/int_types/ssize_t.hpp>
 
 //  todo: padding of integer types
 //  todo: least_int
