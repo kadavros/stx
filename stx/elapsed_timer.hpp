@@ -3,27 +3,9 @@
 
 #include <stx/config.hpp>
 
-#if defined(STX_PLATFORM_POSIX)
+#ifdef STX_PLATFORM_POSIX
+
 #include <time.h>
-#elif defined(STX_PLATFORM_WINDOWS)
-
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN_DEFINED_LOCALLY
-#endif
-#ifndef NOMINMAX
-#define NOMINMAX
-#define NOMINMAX_DEFINED_LOCALLY
-#endif
-#include <windows.h>
-#ifdef NOMINMAX_DEFINED_LOCALLY
-#undef NOMINMAX
-#endif
-#ifdef WIN32_LEAN_AND_MEAN_DEFINED_LOCALLY
-#undef WIN32_LEAN_AND_MEAN
-#endif
-
-#endif
 
 //  TODO
 //  Check other possible timers:
@@ -39,8 +21,6 @@
 #endif
 
 namespace stx {
-
-#ifdef STX_PLATFORM_POSIX
 
 class elapsed_timer
 {
@@ -76,9 +56,27 @@ private:
     struct timespec t1;
 };
 
-#endif // STX_PLATFORM_POSIX
+} // namespace stx
 
-#ifdef STX_PLATFORM_WINDOWS
+#elif defined(STX_PLATFORM_WINDOWS)
+
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN_DEFINED_LOCALLY
+#endif
+#ifndef NOMINMAX
+#define NOMINMAX
+#define NOMINMAX_DEFINED_LOCALLY
+#endif
+#include <windows.h>
+#ifdef NOMINMAX_DEFINED_LOCALLY
+#undef NOMINMAX
+#endif
+#ifdef WIN32_LEAN_AND_MEAN_DEFINED_LOCALLY
+#undef WIN32_LEAN_AND_MEAN
+#endif
+
+namespace stx {
 
 class elapsed_timer
 {
@@ -120,8 +118,27 @@ private:
     LARGE_INTEGER t1;
 };
 
-#endif // STX_PLATFORM_WINDOWS
+} // namespace stx
+
+#else
+
+#include <time.h>
+
+namespace stx {
+
+class elapsed_timer
+{
+public:
+    elapsed_timer() { reset(); }
+    void reset() { t1 = clock(); }
+    double elapsed() { return (double) (clock() - t1)/CLOCKS_PER_SEC; }
+    
+private:
+    clock_t t1;
+};
 
 } // namespace stx
+
+#endif
 
 #endif // STX_ELAPSED_TIMER_HPP
