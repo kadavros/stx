@@ -1,5 +1,5 @@
-#ifndef STX_IS_ALIGNED_HPP
-#define STX_IS_ALIGNED_HPP
+#ifndef STX_ALIGNMENT_IS_ALIGNED_HPP
+#define STX_ALIGNMENT_IS_ALIGNED_HPP
 
 #include <assert.h>
 #include <stddef.h>
@@ -35,4 +35,4 @@ inline bool is_aligned(U T::*p, size_t alignment)
 
 } // namespace stx
 
-#endif // STX_IS_ALIGNED_HPP
+#endif // STX_ALIGNMENT_IS_ALIGNED_HPP

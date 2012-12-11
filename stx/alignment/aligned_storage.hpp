@@ -1,9 +1,9 @@
-#ifndef STX_ALIGNED_STORAGE_HPP
-#define STX_ALIGNED_STORAGE_HPP
+#ifndef STX_ALIGNMENT_ALIGNED_STORAGE_HPP
+#define STX_ALIGNMENT_ALIGNED_STORAGE_HPP
 
 #include <stddef.h>
-#include <stx/alignment_of.hpp>
-#include <stx/max_alignment.hpp>
+#include <stx/alignment/alignment_of.hpp>
+#include <stx/alignment/max_alignment.hpp>
 
 namespace stx {
 
@@ -22,4 +22,4 @@ struct aligned_storage
 
 } // namespace stx
 
-#endif // STX_ALIGNED_STORAGE_HPP
+#endif // STX_ALIGNMENT_ALIGNED_STORAGE_HPP

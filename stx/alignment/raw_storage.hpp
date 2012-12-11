@@ -1,7 +1,7 @@
-#ifndef STX_RAW_STORAGE_HPP_
-#define STX_RAW_STORAGE_HPP_
+#ifndef STX_ALIGNMENT_RAW_STORAGE_HPP
+#define STX_ALIGNMENT_RAW_STORAGE_HPP
 
-#include <stx/aligned_storage.hpp>
+#include <stx/alignment/aligned_storage.hpp>
 
 namespace stx {
 
@@ -71,4 +71,4 @@ private:
 
 } // namespace stx
 
-#endif // STX_RAW_STORAGE_HPP_
+#endif // STX_ALIGNMENT_RAW_STORAGE_HPP
