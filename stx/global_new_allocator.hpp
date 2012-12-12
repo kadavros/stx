@@ -1,5 +1,5 @@
-#ifndef STX_STD_ALLOCATOR_HPP
-#define STX_STD_ALLOCATOR_HPP
+#ifndef STX_GLOBAL_NEW_ALLOCATOR_HPP
+#define STX_GLOBAL_NEW_ALLOCATOR_HPP
 
 #include <new>
 #include <assert.h>
@@ -9,7 +9,7 @@
 namespace stx {
 
 template <typename T>
-class std_allocator
+class global_new_allocator
 {
 public:
     
@@ -24,23 +24,23 @@ public:
     template <typename T1>
     struct rebind
     {
-        typedef std_allocator<T1> other;
+        typedef global_new_allocator<T1> other;
     };
     
-    std_allocator() throw()
+    global_new_allocator() throw()
     {
     }
     
-    std_allocator(const std_allocator&) throw()
+    global_new_allocator(const global_new_allocator&) throw()
     {
     }
     
     template <typename T1>
-    std_allocator(const std_allocator<T1>&) throw()
+    global_new_allocator(const global_new_allocator<T1>&) throw()
     {
     }
     
-    ~std_allocator() throw()
+    ~global_new_allocator() throw()
     {
     }
     
@@ -89,17 +89,17 @@ public:
 };
 
 template <typename T>
-inline bool operator==(const std_allocator<T>&, const std_allocator<T>&)
+inline bool operator==(const global_new_allocator<T>&, const global_new_allocator<T>&)
 {
     return true;
 }
 
 template <typename T>
-inline bool operator!=(const std_allocator<T>&, const std_allocator<T>&)
+inline bool operator!=(const global_new_allocator<T>&, const global_new_allocator<T>&)
 {
     return false;
 }
 
 } // namespace stx
 
-#endif // STX_STD_ALLOCATOR_HPP
+#endif // STX_GLOBAL_NEW_ALLOCATOR_HPP

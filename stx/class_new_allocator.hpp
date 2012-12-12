@@ -1,5 +1,5 @@
-#ifndef STX_CUSTOM_NEW_ALLOCATOR_HPP
-#define STX_CUSTOM_NEW_ALLOCATOR_HPP
+#ifndef STX_CLASS_NEW_ALLOCATOR_HPP
+#define STX_CLASS_NEW_ALLOCATOR_HPP
 
 #include <new>
 #include <assert.h>
@@ -9,7 +9,7 @@
 namespace stx {
 
 template <typename T>
-class custom_new_allocator
+class class_new_allocator
 {
 public:
     
@@ -24,23 +24,23 @@ public:
     template <typename T1>
     struct rebind
     {
-        typedef custom_new_allocator<T1> other;
+        typedef class_new_allocator<T1> other;
     };
     
-    custom_new_allocator() throw()
+    class_new_allocator() throw()
     {
     }
     
-    custom_new_allocator(const custom_new_allocator&) throw()
+    class_new_allocator(const class_new_allocator&) throw()
     {
     }
     
     template <typename T1>
-    custom_new_allocator(const custom_new_allocator<T1>&) throw()
+    class_new_allocator(const class_new_allocator<T1>&) throw()
     {
     }
     
-    ~custom_new_allocator() throw()
+    ~class_new_allocator() throw()
     {
     }
     
@@ -89,17 +89,17 @@ public:
 };
 
 template <typename T>
-inline bool operator==(const custom_new_allocator<T>&, const custom_new_allocator<T>&)
+inline bool operator==(const class_new_allocator<T>&, const class_new_allocator<T>&)
 {
     return true;
 }
 
 template <typename T>
-inline bool operator!=(const custom_new_allocator<T>&, const custom_new_allocator<T>&)
+inline bool operator!=(const class_new_allocator<T>&, const class_new_allocator<T>&)
 {
     return false;
 }
 
 } // namespace stx
 
-#endif // STX_CUSTOM_NEW_ALLOCATOR_HPP
+#endif // STX_CLASS_NEW_ALLOCATOR_HPP
