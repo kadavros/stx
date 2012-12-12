@@ -29,7 +29,7 @@
 #include <stx/int_types/long_long.hpp>
 
 #ifndef SIZE_T_MAX
-#   define SIZE_T_MAX (~((size_t) 0))
+#   define SIZE_T_MAX ((size_t) -1)
 #endif
 
 namespace stx {

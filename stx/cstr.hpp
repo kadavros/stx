@@ -12,7 +12,7 @@
 #include <assert.h>
 
 #ifndef STX_SIZE_T_MAX
-#   define STX_SIZE_T_MAX (~((size_t) 0))
+#   define STX_SIZE_T_MAX ((size_t) -1)
 #endif
 
 namespace stx {

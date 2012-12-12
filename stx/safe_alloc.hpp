@@ -18,7 +18,7 @@ inline void* safe_malloc(size_t size)
 inline void* safe_calloc(size_t num, size_t size)
 {
     void* ret = NULL;
-    if ((num <= (~((size_t) 0))/size) && num && size) {
+    if ((num <= ((size_t) -1)/size) && num && size) {
         ret = calloc(num, size);
     }
     return ret;
