@@ -1,6 +1,9 @@
 #ifndef STX_ALGORITHM_ASSIGN_HPP
 #define STX_ALGORITHM_ASSIGN_HPP
 
+#include <stx/algorithm/begin.hpp>
+#include <stx/algorithm/end.hpp>
+
 #include <stddef.h>
 
 #include <bitset>
@@ -46,7 +49,7 @@ template <class T, class A, class Container>
 inline std::vector<T, A>&
 assign(std::vector<T, A>& x1, const Container& x2)
 {
-    x1.assign(x2.begin(), x2.end());
+    x1.assign(begin(x2), end(x2));
     return x1;
 }
 
@@ -54,7 +57,7 @@ template <class T, class A, class Container>
 inline std::deque<T, A>&
 assign(std::deque<T, A>& x1, const Container& x2)
 {
-    x1.assign(x2.begin(), x2.end());
+    x1.assign(begin(x2), end(x2));
     return x1;
 }
 
@@ -62,7 +65,7 @@ template <class T, class A, class Container>
 inline std::list<T, A>&
 assign(std::list<T, A>& x1, const Container& x2)
 {
-    x1.assign(x2.begin(), x2.end());
+    x1.assign(begin(x2), end(x2));
     return x1;
 }
 
@@ -70,7 +73,7 @@ template <class Char, class Traits, class Allocator, class Container>
 inline std::basic_string<Char, Traits, Allocator>&
 assign(std::basic_string<Char, Traits, Allocator>& x1, const Container& x2)
 {
-    x1.assign(x2.begin(), x2.end());
+    x1.assign(begin(x2), end(x2));
     return x1;
 }
 
