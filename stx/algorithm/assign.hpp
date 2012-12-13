@@ -11,22 +11,6 @@
 #include <list>
 #include <string>
 
-//#include <bitset>
-//#include <valarray>
-
-//#include <set>
-//#include <map>
-
-//#include <queue>
-//#include <stack>
-
-//#if __cplusplus >= 201103L
-//#include <array>
-//#include <forward_list>
-//#include <unordered_map>
-//#include <unordered_set>
-//#endif
-
 namespace stx {
 
 template <class T1, class T2>
