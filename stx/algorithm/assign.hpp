@@ -6,26 +6,26 @@
 
 #include <stddef.h>
 
-#include <bitset>
-#include <valarray>
-
 #include <vector>
 #include <deque>
 #include <list>
 #include <string>
 
-#include <set>
-#include <map>
+//#include <bitset>
+//#include <valarray>
 
-#include <queue>
-#include <stack>
+//#include <set>
+//#include <map>
 
-#if __cplusplus >= 201103L
-#include <array>
-#include <forward_list>
-#include <unordered_map>
-#include <unordered_set>
-#endif
+//#include <queue>
+//#include <stack>
+
+//#if __cplusplus >= 201103L
+//#include <array>
+//#include <forward_list>
+//#include <unordered_map>
+//#include <unordered_set>
+//#endif
 
 namespace stx {
 
@@ -37,11 +37,12 @@ assign(T1& x1, const T2& x2)
     return x1;
 }
 
-template <size_t N>
-inline std::bitset<N>&
-assign(std::bitset<N>& x1, const std::bitset<N>& x2)
+template <class T1, class T2, size_t Size>
+inline T1 (&assign(T1 (&x1)[Size], const T2 (&x2)[Size]))[Size]
 {
-    x1 = x2;
+    for (size_t i = 0; i < Size; ++i) {
+        x1[i] = x2[i];
+    }
     return x1;
 }
 

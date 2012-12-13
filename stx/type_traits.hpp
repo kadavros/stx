@@ -5,11 +5,8 @@
 #include <stx/type_traits/bool_types.hpp>
 #include <stx/type_traits/is_integer_typedef.hpp>
 #include <stx/type_traits/is_same.hpp>
-
-namespace stx {
-
-
-
-} // namespace stx
+#include <stx/type_traits/is_integral.hpp>
+#include <stx/type_traits/is_float.hpp>
+#include <stx/type_traits/is_pod.hpp>
 
 #endif // STX_TYPE_TRAITS_HPP

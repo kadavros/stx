@@ -1,8 +1,8 @@
 #ifndef STX_TYPE_TRAITS_IS_INTEGER_TYPEDEF_HPP
 #define STX_TYPE_TRAITS_IS_INTEGER_TYPEDEF_HPP
 
-#include <stx/int_types/long_long.hpp>
 #include <stx/type_traits/bool_types.hpp>
+#include <stx/int_types/long_long.hpp>
 
 namespace stx {
 
