@@ -27,10 +27,26 @@ inline T rotate_right(T x)
 }
 
 template <class T>
+inline T rotate_right(T x, size_t n)
+{
+    typedef typename unsigned_type_guard<T>::type type;
+    n %= sizeof(T) * CHAR_BIT;
+    return (x << n) | (x >> (sizeof(T) * CHAR_BIT - n));
+}
+
+template <class T>
 inline T rotate_left(T x)
 {
     typedef typename unsigned_type_guard<T>::type type;
     return (x >> 1) | (x << (sizeof(T) * CHAR_BIT - 1));
+}
+
+template <class T>
+inline T rotate_left(T x, size_t n)
+{
+    typedef typename unsigned_type_guard<T>::type type;
+    n %= sizeof(T) * CHAR_BIT;
+    return (x >> n) | (x << (sizeof(T) * CHAR_BIT - n));
 }
 
 } // namespace stx
