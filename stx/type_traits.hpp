@@ -8,5 +8,6 @@
 #include <stx/type_traits/is_integral.hpp>
 #include <stx/type_traits/is_float.hpp>
 #include <stx/type_traits/is_pod.hpp>
+#include <stx/type_traits/remove_pointer.hpp>
 
 #endif // STX_TYPE_TRAITS_HPP

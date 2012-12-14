@@ -20,6 +20,13 @@ begin(const Container& c)
 }
 
 template <class T, size_t Size>
+inline T*
+begin(T (&x)[Size])
+{
+    return &x[0];
+}
+
+template <class T, size_t Size>
 inline const T*
 begin(const T (&x)[Size])
 {

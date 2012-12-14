@@ -20,6 +20,13 @@ end(const Container& c)
 }
 
 template <class T, size_t Size>
+inline T*
+end(T (&x)[Size])
+{
+    return &x[Size];
+}
+
+template <class T, size_t Size>
 inline const T*
 end(const T (&x)[Size])
 {
