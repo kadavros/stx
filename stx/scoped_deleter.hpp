@@ -5,20 +5,10 @@
 #include <stx/algorithm/end.hpp>
 #include <stx/default_delete.hpp>
 #include <stx/type_traits/remove_pointer.hpp>
+#include <stx/type_traits/container_value_type.hpp>
+#include <stx/type_traits/container_iterator_type.hpp>
 
 namespace stx {
-
-template <class T>
-struct container_value_type { typedef typename T::value_type type; };
-
-template <class T, size_t Size>
-struct container_value_type<T [Size]> { typedef T type; };
-
-template <class T>
-struct container_iterator_type { typedef typename T::iterator type; };
-
-template <class T, size_t Size>
-struct container_iterator_type<T [Size]> { typedef T* type; };
 
 template <
     class Container,
@@ -31,11 +21,11 @@ public:
     typedef Container container_type;
     typedef Deleter deleter_type;
     
-    scoped_deleter(container_type& c): c_(c) {}
+    scoped_deleter(const container_type& c): c_(c) {}
     
     ~scoped_deleter()
     {
-        typename container_iterator_type<container_type>::type i = begin(c_), last = end(c_);
+        typename container_const_iterator_type<container_type>::type i = begin(c_), last = end(c_);
         for (; i != last; ++i) {
             deleter_type::operator()(*i);
         }
@@ -43,7 +33,7 @@ public:
     
 private:
     
-    container_type& c_;
+    const container_type& c_;
 };
 
 } // namespace stx

@@ -9,5 +9,7 @@
 #include <stx/type_traits/is_float.hpp>
 #include <stx/type_traits/is_pod.hpp>
 #include <stx/type_traits/remove_pointer.hpp>
+#include <stx/type_traits/container_value_type.hpp>
+#include <stx/type_traits/container_iterator_type.hpp>
 
 #endif // STX_TYPE_TRAITS_HPP
