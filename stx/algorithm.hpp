@@ -2,6 +2,8 @@
 #define STX_STD_CONTAINERS_HPP
 
 #include <stx/algorithm/assign.hpp>
+#include <stx/algorithm/construct.hpp>
+#include <stx/algorithm/destroy.hpp>
 
 /////////////////////////////////////////////////////////////////////////////
 //  Non-modifying sequence operations
