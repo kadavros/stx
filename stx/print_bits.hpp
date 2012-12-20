@@ -40,36 +40,36 @@ inline Ostream& println_bits(Ostream& s, const T& x)
 }
 
 template <class Ostream, class ForwardIterator>
-inline Ostream& print_bits(Ostream& s, ForwardIterator _begin, ForwardIterator _end)
+inline Ostream& print_bits(Ostream& s, ForwardIterator begin, ForwardIterator end)
 {
-    for (; _begin != _end; ++_begin) {
-        print_bits(s, *_begin);
+    for (; begin != end; ++begin) {
+        print_bits(s, *begin);
     }
     return s;
 }
 
 template <class Ostream, class ForwardIterator>
-inline Ostream& println_bits(Ostream& s, ForwardIterator _begin, ForwardIterator _end)
+inline Ostream& println_bits(Ostream& s, ForwardIterator begin, ForwardIterator end)
 {
-    print_bits(s, _begin, _end);
+    print_bits(s, begin, end);
     s << '\n';
     return s;
 }
 
 template <class Ostream, class ForwardIterator>
-inline Ostream& print_bits(Ostream& s, ForwardIterator _begin, size_t size)
+inline Ostream& print_bits(Ostream& s, ForwardIterator begin, size_t size)
 {
     size_t i;
-    for (i = 0; i < size; ++i, ++_begin) {
-        print_bits(s, *_begin);
+    for (i = 0; i < size; ++i, ++begin) {
+        print_bits(s, *begin);
     }
     return s;
 }
 
 template <class Ostream, class ForwardIterator>
-inline Ostream& println_bits(Ostream& s, ForwardIterator _begin, size_t size)
+inline Ostream& println_bits(Ostream& s, ForwardIterator begin, size_t size)
 {
-    print_bits(s, _begin, size);
+    print_bits(s, begin, size);
     s << '\n';
     return s;
 }
