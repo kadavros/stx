@@ -146,6 +146,10 @@ inline bool index_sort(
     else {
         ret = index_sort_impl<ForwardIterator, Integer, unsigned long long>(first, size, min_value, max_value);
     }
+#   else
+    else {
+        ret = false;
+    }
 #   endif
     
     return ret;
