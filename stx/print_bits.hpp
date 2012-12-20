@@ -56,6 +56,24 @@ inline Ostream& println_bits(Ostream& s, ForwardIterator _begin, ForwardIterator
     return s;
 }
 
+template <class Ostream, class ForwardIterator>
+inline Ostream& print_bits(Ostream& s, ForwardIterator _begin, size_t size)
+{
+    size_t i;
+    for (i = 0; i < size; ++i, ++_begin) {
+        print_bits(s, *_begin);
+    }
+    return s;
+}
+
+template <class Ostream, class ForwardIterator>
+inline Ostream& println_bits(Ostream& s, ForwardIterator _begin, size_t size)
+{
+    print_bits(s, _begin, size);
+    s << '\n';
+    return s;
+}
+
 } // namespace stx
 
 #endif // STX_PRINT_BITS_HPP
