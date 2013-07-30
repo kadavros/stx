@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <stddef.h>
+#include <string.h>
 
 #ifdef __GNUC__
 #define PRINTF_FORMAT(format_param, dots_param) \
@@ -71,11 +72,16 @@ inline int str_vprintf_impl(String& s, bool is_sequential, const char* format, v
             n = vsnprintf_impl(&s[0], size, format, args);
             if (n < 0) return n;
         } else {
-            std::vector<char> v;
-            v.resize(size);
-            n = vsnprintf_impl(&v[0], size, format, args);
+            struct scoped_buf
+			{
+				char* ptr;
+				scoped_buf(size_t n) { ptr = (char*) malloc(n); }
+				~scoped_buf() { free(ptr); }
+			};
+			scoped_buf buf(size);
+            p = buf.ptr;
+            n = vsnprintf_impl(p, size, format, args);
             if (n < 0) return n;
-            p = &v[0];
             s.assign(p, p + n);
         }
     }
