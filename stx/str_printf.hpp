@@ -89,8 +89,10 @@ inline int str_vprintf_impl(String& s, bool is_sequential, const char* format, v
 }
 
 template <class String> inline bool is_continuous_string(String&) { return false; }
-//template <> inline bool is_continuous_string(std::string&) { return true; } // Only for C++11
 template <> inline bool is_continuous_string(std::vector<char>&) { return true; }
+#if __cplusplus >= 201103L
+template <> inline bool is_continuous_string(std::string&) { return true; }
+#endif
 
 template <class String>
 inline int str_vprintf(String& s, const char* format, va_list args)
