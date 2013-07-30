@@ -49,9 +49,10 @@ inline int str_vprintf_impl(StringType& s, bool is_sequential, const char* forma
     char buf[BufSize];
     char* p = buf;
     int size = BufSize;
+    size_t capacity = s.capacity();
     
-    if (s.capacity() >= BufSize) {
-        s.resize(s.capacity());
+    if (capacity >= 64 || capacity >= BufSize) {
+        s.resize(capacity);
         p = &s[0];
         size = s.size();
     }
