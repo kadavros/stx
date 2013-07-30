@@ -73,12 +73,12 @@ inline int str_vprintf_impl(StringType& s, bool is_sequential, const char* forma
             if (n < 0) return n;
         } else {
             struct scoped_buf
-			{
-				char* ptr;
-				scoped_buf(size_t n) { ptr = (char*) malloc(n); }
-				~scoped_buf() { free(ptr); }
-			};
-			scoped_buf buf(size);
+            {
+                char* ptr;
+                scoped_buf(size_t n) { ptr = (char*) malloc(n); }
+                ~scoped_buf() { free(ptr); }
+            };
+            scoped_buf buf(size);
             p = buf.ptr;
             n = vsnprintf_impl(p, size, format, args);
             if (n < 0) return n;
