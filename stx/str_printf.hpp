@@ -39,12 +39,12 @@ inline int vsnprintf_impl(char* buffer, size_t size, const char* format, va_list
 }
 #endif
 
-template <size_t BufSize, class String>
-inline int str_vprintf_impl(String& s, bool is_sequential, const char* format, va_list args)
+template <size_t BufSize, class StringType>
+inline int str_vprintf_impl(StringType& s, bool is_sequential, const char* format, va_list args)
 PRINTF_FORMAT(3, 0);
 
-template <size_t BufSize, class String>
-inline int str_vprintf_impl(String& s, bool is_sequential, const char* format, va_list args)
+template <size_t BufSize, class StringType>
+inline int str_vprintf_impl(StringType& s, bool is_sequential, const char* format, va_list args)
 {
     char buf[BufSize];
     char* p = buf;
@@ -88,28 +88,33 @@ inline int str_vprintf_impl(String& s, bool is_sequential, const char* format, v
     return n;
 }
 
-template <class String> inline bool is_continuous_string(String&) { return false; }
-template <> inline bool is_continuous_string(std::vector<char>&) { return true; }
+template <class StringType>
+inline bool is_continuous_string(StringType&) { return false; }
+
+template <class Allocator>
+inline bool is_continuous_string(std::vector<char, Allocator>&) { return true; }
+
 #if __cplusplus >= 201103L
-template <> inline bool is_continuous_string(std::string&) { return true; }
+template <class Traits, class Allocator>
+inline bool is_continuous_string(std::basic_string<char, Traits, Allocator>&) { return true; }
 #endif
 
-template <class String>
-inline int str_vprintf(String& s, const char* format, va_list args)
+template <class StringType>
+inline int str_vprintf(StringType& s, const char* format, va_list args)
 PRINTF_FORMAT(2, 0);
 
-template <class String>
-inline int str_printf(String& s, const char* format, ...)
+template <class StringType>
+inline int str_printf(StringType& s, const char* format, ...)
 PRINTF_FORMAT(2, 3);
 
-template <class String>
-inline int str_vprintf(String& s, const char* format, va_list args)
+template <class StringType>
+inline int str_vprintf(StringType& s, const char* format, va_list args)
 {
-    return str_vprintf_impl<1024, String>(s, is_continuous_string(s), format, args);
+    return str_vprintf_impl<1024, StringType>(s, is_continuous_string(s), format, args);
 }
 
-template <class String>
-inline int str_printf(String& s, const char* format, ...)
+template <class StringType>
+inline int str_printf(StringType& s, const char* format, ...)
 {
     va_list args;
     va_start(args, format);
