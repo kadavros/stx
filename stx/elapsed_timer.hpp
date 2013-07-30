@@ -41,7 +41,7 @@ public:
     }
     
     // Elapsed time in seconds.
-    double elapsed()
+    double elapsed() const
     {
         struct timespec t2;
         int ret = clock_gettime(STX_DEFAULT_POSIX_CLOCK, &t2);
@@ -97,7 +97,7 @@ public:
     }
     
     // Elapsed time in seconds.
-    double elapsed()
+    double elapsed() const
     {
         LARGE_INTEGER t2;
         BOOL ret = QueryPerformanceCounter(&t2);
@@ -131,7 +131,7 @@ class elapsed_timer
 public:
     elapsed_timer() { reset(); }
     void reset() { t1 = clock(); }
-    double elapsed() { return (double) (clock() - t1)/CLOCKS_PER_SEC; }
+    double elapsed() const { return (double) (clock() - t1)/CLOCKS_PER_SEC; }
     
 private:
     clock_t t1;
