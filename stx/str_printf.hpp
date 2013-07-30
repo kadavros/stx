@@ -9,16 +9,16 @@
 #include <string.h>
 
 #ifdef __GNUC__
-#define PRINTF_FORMAT(format_param, dots_param) \
+#define _PRINTF_FORMAT(format_param, dots_param) \
     __attribute__((format(printf, format_param, dots_param)))
 #else
-#define PRINTF_FORMAT(format_param, dots_param)
+#define _PRINTF_FORMAT(format_param, dots_param)
 #endif
 
 namespace stx {
 
 inline int vsnprintf_impl(char* buffer, size_t size, const char* format, va_list arguments)
-PRINTF_FORMAT(3, 0);
+_PRINTF_FORMAT(3, 0);
 
 #ifdef _WIN32
 inline int vsnprintf_impl(char* buffer, size_t size, const char* format, va_list arguments)
@@ -41,7 +41,7 @@ inline int vsnprintf_impl(char* buffer, size_t size, const char* format, va_list
 
 template <size_t BufSize, class StringType>
 inline int str_vprintf_impl(StringType& s, bool is_sequential, const char* format, va_list args)
-PRINTF_FORMAT(3, 0);
+_PRINTF_FORMAT(3, 0);
 
 template <size_t BufSize, class StringType>
 inline int str_vprintf_impl(StringType& s, bool is_sequential, const char* format, va_list args)
@@ -102,11 +102,11 @@ inline bool is_continuous_string(std::basic_string<char, Traits, Allocator>&) { 
 
 template <class StringType>
 inline int str_vprintf(StringType& s, const char* format, va_list args)
-PRINTF_FORMAT(2, 0);
+_PRINTF_FORMAT(2, 0);
 
 template <class StringType>
 inline int str_printf(StringType& s, const char* format, ...)
-PRINTF_FORMAT(2, 3);
+_PRINTF_FORMAT(2, 3);
 
 template <class StringType>
 inline int str_vprintf(StringType& s, const char* format, va_list args)
@@ -131,5 +131,7 @@ inline int str_printf(StringType& s, const char* format, ...)
 }
 
 } // namespace stx
+
+#undef _PRINTF_FORMAT
 
 #endif // STX_STR_PRINTF_HPP_
