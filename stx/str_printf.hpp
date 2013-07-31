@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <stdexcept>
 #include <stdio.h>
 #include <stdarg.h>
 #include <stddef.h>
@@ -105,14 +106,14 @@ inline int str_vprintf(StringType& s, const char* format, va_list args)
 _PRINTF_FORMAT(2, 0);
 
 template <class StringType>
-inline int str_printf(StringType& s, const char* format, ...)
-_PRINTF_FORMAT(2, 3);
-
-template <class StringType>
 inline int str_vprintf(StringType& s, const char* format, va_list args)
 {
     return str_vprintf_impl<1024, StringType>(s, is_continuous_string(s), format, args);
 }
+
+template <class StringType>
+inline int str_printf(StringType& s, const char* format, ...)
+_PRINTF_FORMAT(2, 3);
 
 template <class StringType>
 inline int str_printf(StringType& s, const char* format, ...)
@@ -128,6 +129,34 @@ inline int str_printf(StringType& s, const char* format, ...)
         throw;
     }
     return n;
+}
+
+inline std::string str_vprintf(const char* format, va_list args) _PRINTF_FORMAT(1, 0);
+
+inline std::string str_vprintf(const char* format, va_list args)
+{
+    std::string s;
+    int n = str_vprintf(s, format, args);
+    if (n < 0) {
+        throw std::invalid_argument("str_vprintf incorrect format");
+    }
+    return s;
+}
+
+inline std::string str_printf(const char* format, ...) _PRINTF_FORMAT(1, 2);
+
+inline std::string str_printf(const char* format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    try {
+        std::string s(str_vprintf(format, args));
+        va_end(args);
+        return s;
+    } catch (...) {
+        va_end(args);
+        throw;
+    }
 }
 
 } // namespace stx
